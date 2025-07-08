@@ -62,8 +62,8 @@ Une application mobile-first qui transforme l'expérience de soin animalier en u
 
 🛒 BOUTIQUE
 ├─ Catalogue personnalisé
+├─ Panier & Processus achat commande
 ├─ Recommandations IA
-├─ Processus commande
 ├─ Suivi livraisons
 ├─ Abonnements
 └─ Programme fidélité
