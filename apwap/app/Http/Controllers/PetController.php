@@ -9,7 +9,7 @@ class PetController extends Controller
 {
     public function index()
     {
-        $pets = Pet::all();
+        $pets = Pet::orderBy('name')->get();
         return view('pets.index', ['pets' => $pets]);
     }
 
@@ -20,16 +20,18 @@ class PetController extends Controller
 
     public function store(Request $request)
     {
+
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'species' => 'required|string|max:255',
             'breed' => 'nullable|string|max:255',
-            'age' => 'nullable|integer|min:0'
+            'age' => 'nullable|integer|min:0',
+            'birth_date' => 'nullable|date',
         ]);
-
+        $validated['user_id'] = auth()->id();
         $pet = Pet::create($validated);
 
-        return redirect()->route('pets.show', $pet->id)
+        return redirect()->route('pets.index', $pet->id)
             ->with('success', 'Animal ajouté avec succès');
     }
 
@@ -49,12 +51,12 @@ class PetController extends Controller
             'name' => 'required|string|max:255',
             'species' => 'required|string|max:255',
             'breed' => 'nullable|string|max:255',
-            'age' => 'nullable|integer|min:0'
+            'birth_date' => 'nullable|date',
         ]);
 
         $pet->update($validated);
 
-        return redirect()->route('pets.show', $pet->id)
+        return redirect()->route('pets.index', $pet->id)
             ->with('success', 'Profil animal mis à jour');
     }
 

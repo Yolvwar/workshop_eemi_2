@@ -1,7 +1,5 @@
 @extends('layouts.app')
 
-@section('title', 'Détails de l\'animal')
-
 @section('content')
     <div class="max-w-3xl mx-auto bg-white p-6 rounded-lg shadow mt-8">
         <h2 class="text-3xl font-bold text-gray-800 mb-4">{{ $pet->name }}</h2>
@@ -10,7 +8,16 @@
                 class="text-gray-900">{{ $pet->species }}</span></p>
         <p class="mb-2"><strong class="text-gray-700">Race :</strong> <span class="text-gray-900">{{ $pet->breed }}</span>
         </p>
-        <p class="mb-6"><strong class="text-gray-700">Âge :</strong> <span class="text-gray-900">{{ $pet->age }}</span></p>
+        <p class="mb-6">
+            <strong class="text-gray-700">Âge :</strong>
+            <span class="text-gray-900">
+                @if($pet->birth_date)
+                    {{ round(\Carbon\Carbon::parse($pet->birth_date)->diffInMonths(now())) }} mois
+                @else
+                    Inconnu
+                @endif
+            </span>
+        </p>
 
         <div class="flex gap-4">
             <a href="{{ route('pets.edit', $pet) }}" class="bg-yellow-400 text-white px-4 py-2 rounded hover:bg-yellow-500">
