@@ -5,19 +5,16 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
+use Illuminate\Database\Eloquent\Concerns\HasUuids;
 
 class Veterinarian extends Model
 {
     use HasFactory;
+    use HasUuids;
 
-    /**
-     * Indicates if the model's ID is auto-incrementing.
-     */
+    protected $table = 'veterinarians';
+
     public $incrementing = false;
-
-    /**
-     * The data type of the auto-incrementing ID.
-     */
     protected $keyType = 'string';
 
     protected $fillable = [
@@ -78,7 +75,7 @@ class Veterinarian extends Model
     protected static function boot()
     {
         parent::boot();
-        
+
         static::creating(function ($model) {
             if (empty($model->id)) {
                 $model->id = (string) \Illuminate\Support\Str::uuid();

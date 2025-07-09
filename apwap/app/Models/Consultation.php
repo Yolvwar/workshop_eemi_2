@@ -2,22 +2,18 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Str;
+use Illuminate\Database\Eloquent\Concerns\HasUuids;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Consultation extends Model
 {
-    use HasFactory;
+    use HasUuids;
 
-    /**
-     * Indicates if the model's ID is auto-incrementing.
-     */
+    protected $table = 'consultations';
+
+    // Le champ id est un UUID, on désactive l'incrément automatique
     public $incrementing = false;
-
-    /**
-     * The data type of the auto-incrementing ID.
-     */
     protected $keyType = 'string';
 
     protected $fillable = [
@@ -58,37 +54,26 @@ class Consultation extends Model
 
     protected $casts = [
         'scheduled_date' => 'date',
+        'scheduled_time' => 'time',
         'started_at' => 'datetime',
         'completed_at' => 'datetime',
+        'documents' => 'array',
+        'latitude' => 'float',
+        'longitude' => 'float',
         'consultation_fee' => 'decimal:2',
         'additional_fees' => 'decimal:2',
         'total_cost' => 'decimal:2',
-        'user_rating' => 'integer',
-        'latitude' => 'decimal:8',
-        'longitude' => 'decimal:8',
-        'documents' => 'array',
     ];
 
-    protected static function boot()
-    {
-        parent::boot();
-        
-        static::creating(function ($model) {
-            if (empty($model->id)) {
-                $model->id = (string) \Illuminate\Support\Str::uuid();
-            }
-        });
-    }
-
     // Relations
-    public function user()
-    {
-        return $this->belongsTo(User::class);
-    }
-
     public function pet()
     {
         return $this->belongsTo(Pet::class);
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
     }
 
     public function veterinarian()
@@ -200,4 +185,9 @@ class Consultation extends Model
             $this->scheduled_date->format('Y-m-d') . ' ' . $this->scheduled_time
         );
     }
+    public function medicalHistories()
+    {
+        return $this->hasMany(PetMedicalHistory::class);
+    }
+
 }

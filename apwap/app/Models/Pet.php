@@ -5,19 +5,17 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
+use Illuminate\Database\Eloquent\Concerns\HasUuids;
+
 
 class Pet extends Model
 {
     use HasFactory;
+    use HasUuids;
 
-    /**
-     * Indicates if the model's ID is auto-incrementing.
-     */
+    protected $table = 'pets';
+
     public $incrementing = false;
-
-    /**
-     * The data type of the auto-incrementing ID.
-     */
     protected $keyType = 'string';
 
     protected $fillable = [
@@ -136,7 +134,7 @@ class Pet extends Model
         if (!$this->birth_date) {
             return null;
         }
-        
+
         return $this->birth_date->diffInYears(now());
     }
 
@@ -148,15 +146,15 @@ class Pet extends Model
         if (!$this->birth_date) {
             return 'Âge inconnu';
         }
-        
+
         $years = $this->birth_date->diffInYears(now());
         $months = $this->birth_date->diffInMonths(now()) % 12;
-        
+
         if ($years > 0) {
-            return $years . ' an' . ($years > 1 ? 's' : '') . 
-                   ($months > 0 ? ' et ' . $months . ' mois' : '');
+            return $years . ' an' . ($years > 1 ? 's' : '') .
+                ($months > 0 ? ' et ' . $months . ' mois' : '');
         }
-        
+
         return $months . ' mois';
     }
 
@@ -187,18 +185,18 @@ class Pet extends Model
             $this->lifestyle_score,
             $this->emotional_score,
         ];
-        
-        $validScores = array_filter($scores, function($score) {
+
+        $validScores = array_filter($scores, function ($score) {
             return $score > 0;
         });
-        
+
         if (empty($validScores)) {
             return 0;
         }
-        
+
         $this->overall_score = round(array_sum($validScores) / count($validScores));
         $this->save();
-        
+
         return $this->overall_score;
     }
 
@@ -207,9 +205,12 @@ class Pet extends Model
      */
     public function getScoreColorClass($score)
     {
-        if ($score >= 85) return 'text-green-600';
-        if ($score >= 70) return 'text-yellow-600';
-        if ($score >= 50) return 'text-orange-600';
+        if ($score >= 85)
+            return 'text-green-600';
+        if ($score >= 70)
+            return 'text-yellow-600';
+        if ($score >= 50)
+            return 'text-orange-600';
         return 'text-red-600';
     }
 
@@ -243,8 +244,9 @@ class Pet extends Model
     public function isSenior()
     {
         $age = $this->age;
-        if (!$age) return false;
-        
+        if (!$age)
+            return false;
+
         // Chien/Chat : senior à partir de 7 ans
         return $age >= 7;
     }
@@ -255,9 +257,36 @@ class Pet extends Model
     public function isPuppy()
     {
         $age = $this->age;
-        if (!$age) return false;
-        
+        if (!$age)
+            return false;
+
         // Moins d'un an
         return $age < 1;
     }
+    public function photos()
+    {
+        return $this->hasMany(PetPhoto::class);
+    }
+
+    public function medicalHistories()
+    {
+        return $this->hasMany(PetMedicalHistory::class);
+    }
+
+    public function vaccinations()
+    {
+        return $this->hasMany(PetVaccination::class);
+    }
+
+    public function consultations()
+    {
+        return $this->hasMany(Consultation::class);
+    }
+
+    public function healthRecord()
+    {
+        return $this->hasOne(PetHealthRecord::class);
+    }
+
+
 }
