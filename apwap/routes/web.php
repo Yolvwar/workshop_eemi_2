@@ -8,6 +8,9 @@ use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ConsultationController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\PetController;
+use App\Http\Controllers\PetPhotoController;
+use App\Http\Controllers\PetScoreController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -24,7 +27,7 @@ Route::prefix('shop')->name('shop.')->group(function () {
     Route::get('/product/{product}', [ShopController::class, 'show'])->name('product');
     Route::get('/category/{category}', [ShopController::class, 'category'])->name('category');
     Route::get('/search', [ShopController::class, 'search'])->name('search');
-    
+
     Route::middleware('auth')->group(function () {
         Route::get('/pet/{pet}/recommendations', [ShopController::class, 'petRecommendations'])->name('pet.recommendations');
     });
@@ -40,18 +43,18 @@ Route::middleware('auth')->group(function () {
         Route::post('/clear', [CartController::class, 'clear'])->name('clear');
         Route::get('/count', [CartController::class, 'count'])->name('count');
         Route::get('/mini', [CartController::class, 'mini'])->name('mini');
-        
+
         Route::post('/apply-coupon', [CartController::class, 'applyCoupon'])->name('apply-coupon');
         Route::post('/remove-coupon', [CartController::class, 'removeCoupon'])->name('remove-coupon');
     });
-    
+
     Route::prefix('checkout')->name('checkout.')->group(function () {
         Route::get('/', [CheckoutController::class, 'index'])->name('index');
         Route::post('/', [CheckoutController::class, 'process'])->name('process');
         Route::post('/shipping/calculate', [CheckoutController::class, 'calculateShipping'])->name('shipping.calculate');
         Route::post('/coupon/validate', [CheckoutController::class, 'validateCoupon'])->name('coupon.validate');
     });
-    
+
     Route::prefix('orders')->name('orders.')->group(function () {
         Route::get('/', [OrderController::class, 'index'])->name('index');
         Route::get('/{order}', [OrderController::class, 'show'])->name('show');
@@ -80,25 +83,30 @@ Route::middleware('auth')->group(function () {
         Route::get('/{consultation}', [ConsultationController::class, 'show'])->name('show');
         Route::get('/{consultation}/edit', [ConsultationController::class, 'edit'])->name('edit');
         Route::patch('/{consultation}', [ConsultationController::class, 'update'])->name('update');
-        
+
         Route::get('/{consultation}/prepare', [ConsultationController::class, 'prepare'])->name('prepare');
         Route::patch('/{consultation}/prepare', [ConsultationController::class, 'prepareSave'])->name('prepare.save');
         Route::post('/{consultation}/prepare/send', [ConsultationController::class, 'prepareSend'])->name('prepare.send');
-        
+
         Route::get('/{consultation}/teleconsultation', [ConsultationController::class, 'teleconsultation'])->name('teleconsultation');
         Route::post('/{consultation}/teleconsultation/chat', [ConsultationController::class, 'teleconsultationChat'])->name('teleconsultation.chat');
         Route::post('/{consultation}/teleconsultation/extend', [ConsultationController::class, 'teleconsultationExtend'])->name('teleconsultation.extend');
         Route::get('/teleconsultation/create', [ConsultationController::class, 'teleconsultationCreate'])->name('teleconsultation.create');
         Route::get('/teleconsultation/emergency', [ConsultationController::class, 'teleconsultationEmergency'])->name('teleconsultation.emergency');
-        
+
         Route::post('/{consultation}/start', [ConsultationController::class, 'start'])->name('start');
         Route::post('/{consultation}/complete', [ConsultationController::class, 'complete'])->name('complete');
         Route::patch('/{consultation}/cancel', [ConsultationController::class, 'cancel'])->name('cancel');
-        
+
         Route::get('/emergency/center', [ConsultationController::class, 'emergency'])->name('emergency');
-        
+
         Route::get('/history/list', [ConsultationController::class, 'history'])->name('history');
     });
+
+    Route::get('pets', [PetController::class, 'index'])->name('pets.index');
+    Route::get('pets/create', [PetController::class, 'create'])->name('pets.create');
+    Route::post('pets', [PetController::class, 'store'])->name('pets.store');
+    Route::get('pets/{pet}', [PetController::class, 'show'])->name('pets.show');
+    Route::get('pets/{pet}/edit', [PetController::class, 'edit'])->name('pets.edit');
 });
 
-require __DIR__.'/auth.php';
