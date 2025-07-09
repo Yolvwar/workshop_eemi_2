@@ -1,52 +1,39 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@yield('title', 'Mon App')</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    {{-- Tailwind CSS (optionnel, tu peux le retirer si tu utilises autre chose) --}}
-    <script src="https://cdn.tailwindcss.com"></script>
+    <title>{{ config('app.name', 'Laravel') }}</title>
 
-    {{-- Styles additionnels --}}
-    @stack('styles')
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.bunny.net">
+    <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
+
+    <!-- Scripts -->
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
-<body class="bg-gray-100 text-gray-900">
+<body class="font-sans antialiased">
+    <div class="min-h-screen bg-gray-100">
+        @include('layouts.navigation')
 
-    {{-- Navbar --}}
-    <nav class="bg-white shadow mb-6">
-        <div class="container mx-auto px-4 py-4 flex justify-between items-center">
-            <a href="{{ url('/') }}" class="text-xl font-bold">MonApp</a>
-            <div>
-                <a href="{{ route('pets.index') }}" class="mr-4 text-blue-500 hover:underline">Animaux</a>
-                <a href="#" class="text-blue-500 hover:underline">À propos</a>
-            </div>
-        </div>
-    </nav>
+        <!-- Page Heading -->
+        @isset($header)
+            <header class="bg-white shadow">
+                <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+                    {{ $header }}
+                </div>
+            </header>
+        @endisset
 
-    {{-- Flash messages --}}
-    @if (session('success'))
-        <div class="container mx-auto px-4 mb-4">
-            <div class="bg-green-100 text-green-800 p-4 rounded">
-                {{ session('success') }}
-            </div>
-        </div>
-    @endif
-
-    {{-- Contenu principal --}}
-    <main class="container mx-auto px-4">
-        @yield('content')
-    </main>
-
-    {{-- Footer --}}
-    <footer class="text-center py-6 mt-12 text-sm text-gray-600">
-        &copy; {{ date('Y') }} MonApp. Tous droits réservés.
-    </footer>
-
-    {{-- Scripts additionnels --}}
-    @stack('scripts')
+        <!-- Page Content -->
+        <main>
+            @yield('content')
+        </main>
+    </div>
 </body>
 
 </html>

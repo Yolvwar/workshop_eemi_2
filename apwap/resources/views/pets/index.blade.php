@@ -3,46 +3,62 @@
 @section('title', 'Liste des animaux')
 
 @section('content')
-    <div class="max-w-3xl mx-auto bg-white p-6 rounded-lg shadow">
-        <div class="flex justify-between items-center mb-6">
-            <h1 class="text-2xl font-bold text-gray-800">🐾 Liste des animaux</h1>
-            <a href="{{ route('pets.create') }}" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
-                + Ajouter un animal
-            </a>
-        </div>
+    <div class="max-w-7xl mx-auto bg-white p-6 rounded-lg shadow space-y-6">
 
-        @if(session('success'))
-            <div class="mb-4 bg-green-100 text-green-800 px-4 py-2 rounded">
-                {{ session('success') }}
+        <div class="mx-8 bg-white p-6 rounded-lg shadow space-y-6">
+            <div class="flex items-center justify-between border-b pb-4">
+                <h1 class="text-2xl font-bold text-gray-800">🐾 Mes Animaux</h1>
+                <a href="{{ route('pets.create') }}" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
+                    + Ajouter Animal
+                </a>
             </div>
-        @endif
 
-        @if(count($pets))
-            <ul class="space-y-3">
-                @foreach($pets as $pet)
-                    <li class="flex justify-between items-center bg-gray-50 px-4 py-3 rounded hover:bg-gray-100">
-                        <a href="{{ route('pets.show', $pet) }}" class="text-blue-600 font-medium hover:underline">
-                            {{ $pet->name }}
-                        </a>
-                        <div class="flex gap-2">
-                            <a href="{{ route('pets.edit', $pet) }}"
-                                class="bg-yellow-400 text-white px-3 py-1 rounded hover:bg-yellow-500">
-                                ✏️ Modifier
+            <p class="text-sm text-gray-600">Dubai, UAE • {{ count($pets) }} compagnon{{ count($pets) > 1 ? 's' : '' }}
+                • Score moyen: {{ round($pets->avg('overall_score')) ?? 0 }}%</p>
+
+            @forelse($pets as $pet)
+                <div class="border-t pt-6 space-y-2">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <a href="{{ route('pets.show', $pet) }}">
+                                <h2 class="text-lg font-semibold text-gray-800 hover:underline">
+                                    🐾 {{ $pet->name }} - {{ $pet->breed ?? 'Race inconnue' }}
+                                    @if($pet->gender === 'male') ♂ @elseif($pet->gender === 'female') ♀ @endif •
+                                    {{ \Carbon\Carbon::parse($pet->birth_date)->age }} ans
+                                </h2>
                             </a>
-                            <form action="{{ route('pets.destroy', $pet) }}" method="POST"
-                                onsubmit="return confirm('Confirmer la suppression ?')">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600">
-                                    🗑 Supprimer
-                                </button>
-                            </form>
+                            <p class="text-sm text-gray-600 mt-1">
+                                📊 Score global: {{ $pet->overall_score }}% &nbsp;&nbsp;
+                                📅 Dernière visite: {{ optional($pet->updated_at)->format('d M') ?? 'Inconnue' }}
+                            </p>
+                            <p class="text-sm italic text-gray-500 mt-1">
+                                🎯 Focus: {{ $pet->markings ?? 'À définir' }}
+                            </p>
                         </div>
-                    </li>
-                @endforeach
-            </ul>
-        @else
-            <p class="text-gray-500">Aucun animal enregistré pour le moment.</p>
-        @endif
+                    </div>
+
+                    <div class="bg-gray-100 rounded-lg p-4 text-sm text-gray-700 space-y-1">
+                        <div class="flex flex-wrap justify-between">
+                            <span>🏥 Santé: {{ $pet->health_score }}%</span>
+                            <span>🎓 Éducation: {{ $pet->education_score }}%</span>
+                            <span>🍽️ Nutrition: {{ $pet->nutrition_score }}%</span>
+                        </div>
+                        <div class="flex flex-wrap justify-between">
+                            <span>🏃 Activité: {{ $pet->activity_score }}%</span>
+                            <span>🏡 Lifestyle: {{ $pet->lifestyle_score }}%</span>
+                            <span>💙 Émotionnel: {{ $pet->emotional_score }}%</span>
+                        </div>
+                    </div>
+
+                    <div class="flex flex-wrap gap-2 pt-2">
+                        <a href="#" class="text-purple-600 hover:underline">📅 Planifier RDV</a>
+                        <a href="#" class="text-pink-600 hover:underline">🛒 Boutique</a>
+                        <a href="#" class="text-green-600 hover:underline">🏃 Activités</a>
+                    </div>
+                </div>
+            @empty
+                <p class="text-gray-500">Aucun animal enregistré pour le moment.</p>
+            @endforelse
+        </div>
     </div>
 @endsection

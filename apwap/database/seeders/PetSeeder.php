@@ -24,7 +24,7 @@ class PetSeeder extends Seeder
             Pet::create([
                 'user_id' => $faker->randomElement($userIds),
                 'name' => Str::substr($faker->firstName, 0, 50),
-                'species' => $faker->randomElement(['dog', 'cat', 'rabbit', 'parrot']),
+                'species' => $faker->randomElement(['dog', 'cat']),
                 'breed' => Str::substr($faker->word, 0, 50),
                 'gender' => $faker->randomElement(['male', 'female']),
                 'is_neutered' => $faker->boolean,
