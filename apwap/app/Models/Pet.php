@@ -94,4 +94,10 @@ class Pet extends Model
         return $this->hasMany(Consultation::class);
     }
 
+    public function healthRecord()
+    {
+        return $this->hasOne(PetHealthRecord::class);
+    }
+
+
 }
