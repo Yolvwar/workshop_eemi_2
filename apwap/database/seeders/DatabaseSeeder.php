@@ -16,18 +16,22 @@ class DatabaseSeeder extends Seeder
     {
         // User::factory(10)->create();
 
-        User::factory()->create([
-            'first_name' => 'Test',
-            'last_name' => 'User',
-            'email' => 'test@mail.com',
-            'password' => Hash::make('password'),
-        ]);
+        User::updateOrCreate(
+            ['email' => 'test@mail.com'], // clé unique pour rechercher l'utilisateur
+            [
+                'first_name' => 'Test',
+                'last_name' => 'User',
+                'password' => Hash::make('password'),
+            ]
+        );
+
 
         // Ajouter les données de la boutique
         $this->call([
             ShopSeeder::class,
             VeterinarianSeeder::class,
-            PetSeeder::class
+            PetSeeder::class,
+            PetHealthRecordSeeder::class
         ]);
     }
 }
