@@ -3,9 +3,9 @@
 @section('title', 'Liste des animaux')
 
 @section('content')
-    <div class="max-w-7xl mx-auto bg-white p-6 rounded-lg shadow space-y-6">
+    <div class="max-w-7xl mx-auto my-8 bg-white p-6 rounded-lg shadow space-y-6">
 
-        <div class="mx-8 bg-white p-6 rounded-lg shadow space-y-6">
+        <div class="mx-8 bg-white p-6 rounded-lg space-y-6">
             <div class="flex items-center justify-between border-b pb-4">
                 <h1 class="text-2xl font-bold text-gray-800">🐾 Mes Animaux</h1>
                 <a href="{{ route('pets.create') }}" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
@@ -25,6 +25,7 @@
                                     🐾 {{ $pet->name }} - {{ $pet->breed ?? 'Race inconnue' }}
                                     @if($pet->gender === 'male') ♂ @elseif($pet->gender === 'female') ♀ @endif •
                                     {{ \Carbon\Carbon::parse($pet->birth_date)->age }} ans
+                                    ({{ round(\Carbon\Carbon::parse($pet->birth_date)->diffInMonths(now())) }} mois)
                                 </h2>
                             </a>
                             <p class="text-sm text-gray-600 mt-1">
