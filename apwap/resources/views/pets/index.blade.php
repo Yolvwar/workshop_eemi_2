@@ -53,7 +53,6 @@
 
                     <div class="flex flex-wrap gap-2 pt-2">
                         <a href="#" class="text-purple-600 hover:underline">📅 Planifier RDV</a>
-                        <a href="#" class="text-pink-600 hover:underline">🛒 Boutique</a>
                         <a href="#" class="text-green-600 hover:underline">🏃 Activités</a>
                     </div>
                 </div>

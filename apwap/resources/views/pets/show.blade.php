@@ -34,8 +34,7 @@
                 <li>• Race : {{ $pet->breed ?? '—' }}</li>
                 <li>• Âge :
                     @if($pet->birth_date)
-                        {{ \Carbon\Carbon::parse($pet->birth_date)->age }} ans (né le
-                        {{ \Carbon\Carbon::parse($pet->birth_date)->format('d m Y') }})
+                        {{ \Carbon\Carbon::parse($pet->birth_date)->age }} ans
                     @else
                         Inconnu
                     @endif
