@@ -22,9 +22,12 @@
 
             <div class="mb-4">
                 <label for="species" class="block text-gray-700 font-semibold mb-2">Espèce</label>
-                <input type="text" id="species" name="species" value="{{ old('species', $pet->species) }}"
-                    class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 @error('species') border-red-500 @enderror"
-                    required>
+                <select name="species" id="species" required
+                    class="w-full border px-4 py-2 rounded @error('species') border-red-500 @enderror">
+                    <option value="chien" @selected(old('species', $pet->species ?? '') == 'chien')>Chien</option>
+                    <option value="chat" @selected(old('species', $pet->species ?? '') == 'chat')>Chat</option>
+                </select>
+
                 @error('species')
                     <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
                 @enderror
@@ -50,26 +53,56 @@
                 @enderror
             </div>
 
+            <div class="mb-4">
+                <label for="gender" class="block text-gray-700 font-semibold mb-2">Sexe</label>
+                <select name="gender" id="gender" required
+                    class="w-full border px-4 py-2 rounded @error('gender') border-red-500 @enderror">
+                    <option value="male" @selected(old('gender', $pet->gender) == 'male')>Mâle</option>
+                    <option value="female" @selected(old('gender', $pet->gender) == 'female')>Femelle</option>
+                </select>
+                @error('gender')
+                    <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                @enderror
+            </div>
+
+            <div class="mb-4">
+                <label for="is_neutered" class="inline-flex items-center gap-2">
+                    <input type="hidden" name="is_neutered" value="0">
+                    <input type="checkbox" id="is_neutered" name="is_neutered" value="1" @checked(old('is_neutered', $pet->is_neutered))>
+                    Castré / Stérilisé
+                </label>
+            </div>
+
+            <div class="mb-4">
+                <label for="weight" class="block text-gray-700 font-semibold mb-2">Poids (kg)</label>
+                <input type="number" step="0.1" id="weight" name="weight" value="{{ old('weight', $pet->weight) }}"
+                    class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+            </div>
+
+            <div class="mb-4">
+                <label for="color" class="block text-gray-700 font-semibold mb-2">Couleur</label>
+                <input type="text" id="color" name="color" value="{{ old('color', $pet->color) }}"
+                    class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+            </div>
+
             <hr class="my-6 border-t">
 
             <h2 class="text-xl font-bold text-gray-800 mb-4">🏥 Santé & Médical</h2>
 
             <div class="mb-4">
-                <label for="primary_vet_name" class="block text-gray-700 font-semibold mb-2">
+                <label for="primary_vet_id" class="block text-gray-700 font-semibold mb-2">
                     Vétérinaire principal
                 </label>
 
-                <select name="health_record[primary_vet_id]" id="primary_vet_id"
+                <select name="health_record[primary_vet_name]" id="primary_vet_name"
                     class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
-                    <option value="">{{ old('health_record.primary_vet_name', $pet->healthRecord->primary_vet_name ?? '') }}
-                    </option>
+                    <option value="">— Sélectionnez un vétérinaire —</option>
                     @foreach ($veterinarians as $vet)
-                        <option value="{{ $vet->id }}" @selected(old('health_record.primary_vet_name', $pet->healthRecord->primary_vet_id ?? '') == $vet->id)>
+                        <option value="{{ $vet->full_name }}" @selected(old('health_record.primary_vet_name', $pet->healthRecord->primary_vet_name ?? '') == $vet->full_name)>
                             {{ $vet->full_name }} — {{ $vet->clinic_name }}
                         </option>
                     @endforeach
                 </select>
-
 
 
             </div>
@@ -93,6 +126,18 @@
                     class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">{{ old('health_record.current_medications', $pet->healthRecord->current_medications ?? '') }}</textarea>
             </div>
 
+            <h2 class="text-xl font-bold text-gray-800 mt-8 mb-4">📊 Scores de suivi</h2>
+
+            @foreach(['health', 'education', 'nutrition', 'activity', 'lifestyle', 'emotional'] as $score)
+                <div class="mb-4">
+                    <label for="{{ $score }}_score" class="block text-gray-700 font-semibold mb-2">
+                        {{ ucfirst($score) }} (0–100)
+                    </label>
+                    <input type="number" id="{{ $score }}_score" name="{{ $score }}_score"
+                        value="{{ old($score . '_score', $pet[$score . '_score']) }}" min="0" max="100"
+                        class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                </div>
+            @endforeach
 
             <div class="flex justify-end gap-3">
                 <a href="{{ route('pets.index') }}"

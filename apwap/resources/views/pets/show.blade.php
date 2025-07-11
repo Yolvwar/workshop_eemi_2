@@ -7,8 +7,16 @@
         <!-- En-tête avec titre, boutons modifier et galerie -->
         <div class="flex justify-between items-start flex-wrap gap-4">
             <h1 class="text-3xl font-bold text-gray-800">
-                🐕 {{ $pet->name }} - {{ $pet->breed ?? 'Race inconnue' }}
+                @if ($pet->species === 'chat')
+                    🐈
+                @elseif ($pet->species === 'chien')
+                    🐕
+                @else
+                    🐾
+                @endif
+                {{ $pet->name }} - {{ $pet->breed ?? 'Race inconnue' }}
             </h1>
+
             <div class="flex gap-2">
                 <a href="{{ route('pets.edit', $pet) }}"
                     class="inline-flex items-center bg-yellow-400 text-white px-4 py-2 rounded hover:bg-yellow-500">
@@ -42,8 +50,6 @@
                 <li>• Sexe : {{ ucfirst($pet->gender) }} @if($pet->is_neutered) (castré) @endif</li>
                 <li>• Poids : {{ $pet->weight ? $pet->weight . ' kg' : '—' }}</li>
                 <li>• Couleur : {{ $pet->color ?? '—' }}</li>
-                <li>• Puce : {{ $pet->microchip_number ?? '—' }}</li>
-                <li>• Assurance : {{ $pet->insurance_provider ?? '—' }}</li>
             </ul>
         </div>
 
@@ -51,16 +57,10 @@
         <div class="border-t pt-4">
             <h2 class="font-semibold text-gray-800 mb-2">🏥 Santé & Médical</h2>
             <ul class="text-gray-700 text-sm space-y-1">
-                <li>• Vétérinaire : {{ $pet->health_record->primary_vet_name ?? '—' }}</li>
-                <li>• Groupe sanguin : {{ $pet->health_record->blood_type ?? '—' }}</li>
-                <li>• Vaccinations :
-                    {{ $pet->vaccinations->count() ? '✅ À jour (prochaines : ' . $pet->vaccinations->pluck('next_due_date')->max()->format('M Y') . ')' : '—' }}
-                </li>
-                <li>• Allergies : {{ $pet->health_record->allergies ?? '—' }}</li>
-                <li>• Médicaments : {{ $pet->health_record->current_medications ?? '—' }}</li>
-                <li>• Chirurgies :
-                </li>
-                <li>• Prochains soins : Bilan annuel recommandé</li>
+                <li>• Vétérinaire : {{ $pet->healthRecord->primary_vet_name ?? '—' }}</li>
+                <li>• Groupe sanguin : {{ $pet->healthRecord->blood_type ?? '—' }}</li>
+                <li>• Allergies : {{ $pet->healthRecord->allergies ?? '—' }}</li>
+                <li>• Médicaments : {{ $pet->healthRecord->current_medications ?? '—' }}</li>
             </ul>
         </div>
 
