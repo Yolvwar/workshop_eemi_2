@@ -21,6 +21,16 @@ class PetSeeder extends Seeder
         }
 
         foreach (range(1, 20) as $i) {
+            $health = $faker->numberBetween(50, 100);
+            $education = $faker->numberBetween(50, 100);
+            $nutrition = $faker->numberBetween(50, 100);
+            $activity = $faker->numberBetween(50, 100);
+            $lifestyle = $faker->numberBetween(50, 100);
+            $emotional = $faker->numberBetween(50, 100);
+
+            $overall = round(($health + $education + $nutrition + $activity + $lifestyle + $emotional) / 6);
+
+
             Pet::create([
                 'user_id' => $faker->randomElement($userIds),
                 'name' => Str::substr($faker->firstName, 0, 50),
@@ -46,13 +56,13 @@ class PetSeeder extends Seeder
                 'exercise_routine' => Str::substr($faker->sentence, 0, 50),
                 'sleeping_habits' => Str::substr($faker->sentence, 0, 50),
                 'fears_phobias' => Str::substr($faker->optional()->sentence ?? '', 0, 50),
-                'health_score' => $faker->numberBetween(50, 100),
-                'education_score' => $faker->numberBetween(50, 100),
-                'nutrition_score' => $faker->numberBetween(50, 100),
-                'activity_score' => $faker->numberBetween(50, 100),
-                'lifestyle_score' => $faker->numberBetween(50, 100),
-                'emotional_score' => $faker->numberBetween(50, 100),
-                'overall_score' => $faker->numberBetween(50, 100),
+                'health_score' => $health,
+                'education_score' => $education,
+                'nutrition_score' => $nutrition,
+                'activity_score' => $activity,
+                'lifestyle_score' => $lifestyle,
+                'emotional_score' => $emotional,
+                'overall_score' => $overall,
                 'profile_image_url' => $faker->imageUrl(300, 300, 'animals', true),
                 'is_active' => $faker->boolean(90),
             ]);

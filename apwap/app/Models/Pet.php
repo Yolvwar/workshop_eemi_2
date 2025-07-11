@@ -288,5 +288,20 @@ class Pet extends Model
         return $this->hasOne(PetHealthRecord::class);
     }
 
+    public function updateOverallScore(): void
+    {
+        $this->overall_score = round((
+            $this->health_score +
+            $this->education_score +
+            $this->nutrition_score +
+            $this->activity_score +
+            $this->lifestyle_score +
+            $this->emotional_score
+        ) / 6);
+
+        $this->saveQuietly();
+    }
+
+
 
 }
