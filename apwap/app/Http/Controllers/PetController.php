@@ -38,7 +38,17 @@ class PetController extends Controller
             'emotional_score' => 'nullable|integer|min:0|max:100',
             'overall_score' => 'nullable|integer|min:0|max:100',
             'markings' => 'nullable|string|max:255',
-            'is_neutered' => 'nullable|boolean', // Ajouté
+            'is_neutered' => 'nullable|boolean',
+            'energy_level' => 'nullable|integer|min:1|max:10',
+            'sociability' => 'nullable|string|max:50',
+            'obedience_level' => 'nullable|integer|min:1|max:10',
+            'fears_phobias' => 'nullable|string',
+            'favorite_toys' => 'nullable|string',
+            'exercise_routine' => 'nullable|string',
+            'feeding_schedule' => 'nullable|string',
+            'feeding_quantity' => 'nullable|string|max:255',
+            'treats_supplements' => 'nullable|string',
+            'food_intolerances' => 'nullable|string',
         ]);
 
 
@@ -71,7 +81,7 @@ class PetController extends Controller
 
         // Création du dossier de santé associé
         $pet->healthRecord()->updateOrCreate(
-            ['pet_id' => $pet->id],
+            ['pet_name' => $pet->name],
             $validatedHealth['health_record']
         );
 
@@ -107,6 +117,12 @@ class PetController extends Controller
             'overall_score' => 'nullable|integer|min:0|max:100',
             'markings' => 'nullable|string|max:255',
             'is_neutered' => 'nullable|boolean',
+            'energy_level' => 'nullable|integer|min:1|max:10',
+            'sociability' => 'nullable|string|max:50',
+            'obedience_level' => 'nullable|integer|min:1|max:10',
+            'fears_phobias' => 'nullable|string',
+            'favorite_toys' => 'nullable|string',
+            'exercise_routine' => 'nullable|string',
         ]);
 
         $pet->update($validated);

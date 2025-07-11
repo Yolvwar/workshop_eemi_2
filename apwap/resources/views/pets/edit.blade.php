@@ -138,6 +138,55 @@
                         class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
                 </div>
             @endforeach
+            <h2 class="text-xl font-bold text-gray-800 mt-8 mb-4">🐕 Profil comportemental</h2>
+
+            <div class="mb-4">
+                <label for="energy_level" class="block text-gray-700 font-semibold mb-2">Niveau d'énergie (1-10)</label>
+                <input type="number" id="energy_level" name="energy_level"
+                    value="{{ old('energy_level', $pet->energy_level) }}" min="1" max="10"
+                    class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+            </div>
+
+            <div class="mb-4">
+                <label for="sociability" class="block text-gray-700 font-semibold mb-2">Sociabilité</label>
+                <select name="sociability" id="sociability"
+                    class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    <option value="">— Sélectionnez —</option>
+                    <option value="Très sociable" @selected(old('sociability', $pet->sociability) == 'Très sociable')>Très
+                        sociable</option>
+                    <option value="Sociable" @selected(old('sociability', $pet->sociability) == 'Sociable')>Sociable</option>
+                    <option value="Moyennement sociable" @selected(old('sociability', $pet->sociability) == 'Moyennement sociable')>Moyennement sociable</option>
+                    <option value="Peu sociable" @selected(old('sociability', $pet->sociability) == 'Peu sociable')>Peu
+                        sociable</option>
+                    <option value="Craintif" @selected(old('sociability', $pet->sociability) == 'Craintif')>Craintif</option>
+                </select>
+            </div>
+
+            <div class="mb-4">
+                <label for="obedience_level" class="block text-gray-700 font-semibold mb-2">Niveau d'obéissance
+                    (1-10)</label>
+                <input type="number" id="obedience_level" name="obedience_level"
+                    value="{{ old('obedience_level', $pet->obedience_level) }}" min="1" max="10"
+                    class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+            </div>
+
+            <div class="mb-4">
+                <label for="fears_phobias" class="block text-gray-700 font-semibold mb-2">Peurs et phobies</label>
+                <textarea id="fears_phobias" name="fears_phobias" rows="3"
+                    class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">{{ old('fears_phobias', $pet->fears_phobias) }}</textarea>
+            </div>
+
+            <div class="mb-4">
+                <label for="favorite_toys" class="block text-gray-700 font-semibold mb-2">Jouets préférés</label>
+                <textarea id="favorite_toys" name="favorite_toys" rows="3"
+                    class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">{{ old('favorite_toys', $pet->favorite_toys) }}</textarea>
+            </div>
+
+            <div class="mb-4">
+                <label for="exercise_routine" class="block text-gray-700 font-semibold mb-2">Routine d'exercice</label>
+                <textarea id="exercise_routine" name="exercise_routine" rows="3"
+                    class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">{{ old('exercise_routine', $pet->exercise_routine) }}</textarea>
+            </div>
 
             <div class="flex justify-end gap-3">
                 <a href="{{ route('pets.index') }}"

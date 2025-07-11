@@ -50,6 +50,7 @@
                 <li>• Sexe : {{ ucfirst($pet->gender) }} @if($pet->is_neutered) (castré) @endif</li>
                 <li>• Poids : {{ $pet->weight ? $pet->weight . ' kg' : '—' }}</li>
                 <li>• Couleur : {{ $pet->color ?? '—' }}</li>
+
             </ul>
         </div>
 
@@ -74,27 +75,6 @@
                 <li>• Peurs : {{ $pet->fears_phobias ?? '—' }}</li>
                 <li>• Jouets préférés : {{ $pet->favorite_toys ?? '—' }}</li>
                 <li>• Habitudes : {{ $pet->exercise_routine ?? '—' }}</li>
-            </ul>
-        </div>
-
-        <!-- Alimentation -->
-        <div class="border-t pt-4">
-            <h2 class="font-semibold text-gray-800 mb-2">🍽️ Alimentation</h2>
-            <ul class="text-gray-700 text-sm space-y-1">
-                <li>• Régime : {{ $pet->feeding_schedule ?? '—' }}</li>
-                <li>• Quantité & horaires : à définir</li>
-                <li>• Friandises & compléments : à compléter</li>
-                <li>• Intolérances : à préciser</li>
-            </ul>
-        </div>
-
-        <!-- Activité Physique -->
-        <div class="border-t pt-4">
-            <h2 class="font-semibold text-gray-800 mb-2">🏃 Activité Physique</h2>
-            <ul class="text-gray-700 text-sm space-y-1">
-                <li>• Promenades : à compléter</li>
-                <li>• Jeux & activité : à définir</li>
-                <li>• Dressage & activités : à planifier</li>
             </ul>
         </div>
 
