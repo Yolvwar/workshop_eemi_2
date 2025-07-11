@@ -154,4 +154,9 @@ class Veterinarian extends Model
         // Logic to find next available time slot
         return now()->addDay(); // Placeholder
     }
+    public function getFullNameAttribute(): string
+    {
+        return trim("{$this->first_name} {$this->last_name}");
+    }
+
 }

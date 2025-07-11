@@ -32,9 +32,6 @@
                                 📊 Score global: {{ $pet->overall_score }}% &nbsp;&nbsp;
                                 📅 Dernière visite: {{ optional($pet->updated_at)->format('d M') ?? 'Inconnue' }}
                             </p>
-                            <p class="text-sm italic text-gray-500 mt-1">
-                                🎯 Focus: {{ $pet->markings ?? 'À définir' }}
-                            </p>
                         </div>
                     </div>
 
