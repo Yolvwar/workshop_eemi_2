@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PetController;
 use App\Http\Controllers\PetPhotoController;
 use App\Http\Controllers\PetScoreController;
+use App\Http\Controllers\CalendarController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -67,6 +68,7 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::middleware('auth')->group(function () {
+    // Profil utilisateur
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::put('/profile/password', [ProfileController::class, 'updatePassword'])->name('password.update');
@@ -110,5 +112,11 @@ Route::middleware('auth')->group(function () {
     Route::get('pets/{pet}/edit', [PetController::class, 'edit'])->name('pets.edit');
     Route::put('pets/{pet}', [PetController::class, 'update'])->name('pets.update');
     Route::delete('pets/{pet}', [PetController::class, 'destroy'])->name('pets.destroy');
+    // Calendrier avec Consultations
+    Route::get('/calendar', [CalendarController::class, 'index'])->name('calendar.index');
+    Route::get('/calendar/events', [CalendarController::class, 'getEvents'])->name('calendar.events');
+    Route::post('/calendar/events', [CalendarController::class, 'store'])->name('calendar.store');
+    Route::put('/calendar/events/{consultation}', [CalendarController::class, 'update'])->name('calendar.update');
+    Route::delete('/calendar/events/{consultation}', [CalendarController::class, 'destroy'])->name('calendar.destroy');
 });
 
