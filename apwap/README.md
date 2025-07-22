@@ -1,43 +1,37 @@
 # 🐾 APWAP - Luxury Pet Care Platform
 
-<p align="center">
-  <img src="https://img.shields.io/badge/Laravel-11.x-FF2D20?style=for-the-badge&logo=laravel&logoColor=white" alt="Laravel">
-  <img src="https://img.shields.io/badge/PHP-8.1+-777BB4?style=for-the-badge&logo=php&logoColor=white" alt="PHP">
-  <img src="https://img.shields.io/badge/PostgreSQL-15-4169E1?style=for-the-badge&logo=postgresql&logoColor=white" alt="PostgreSQL">
-  <img src="https://img.shields.io/badge/Docker-Sail-2496ED?style=for-the-badge&logo=docker&logoColor=white" alt="Docker">
-</p>
+Plateforme complète de soins pour animaux de compagnie combinant dashboard personnalisé, e-commerce spécialisé et gestion vétérinaire.
 
-## 🌟 À propos d'APWAP
+## 🚀 Installation ultra-rapide (2 minutes)
 
-APWAP (Luxury Pet Care) est une plateforme complète dédiée au bien-être des animaux de compagnie haut de gamme aux Émirats Arabes Unis. L'application combine soins vétérinaires, e-commerce spécialisé et suivi personnalisé basé sur 6 piliers fondamentaux.
+### Prérequis
+- **Docker Desktop** installé et démarré
+- **Git** installé
+- **Composer** installé globalement
 
-### 🎯 Modules principaux
+### Installation
 
-- **🏠 Dashboard** - Tableau de bord personnalisé avec scores des 6 piliers
-- **🐕 Gestion des animaux** - Profils détaillés, historique médical, photos
-- **👨‍⚕️ Consultations vétérinaires** - Rendez-vous, téléconsultations, suivi
-- **🛒 Boutique e-commerce** - Produits spécialisés, recommandations IA
-- **⚙️ Profil utilisateur** - Paramètres, préférences, membership
+#### Sur Windows (PowerShell)
+```powershell
+# 1. Cloner le projet
+git clone <repository-url>
+cd apwap
 
-### 🏗️ Architecture technique
+# 2. Copier le fichier d'environnement
+copy .env.example .env
 
-- **Backend** : Laravel 11.x avec Eloquent ORM
-- **Base de données** : PostgreSQL avec support JSON et UUID
-- **Containerisation** : Docker avec Laravel Sail
-- **Cache** : Redis pour les performances
-- **Stockage** : Support AWS S3 pour les fichiers
-- **API** : RESTful avec authentification JWT
+# 3. Installer les dépendances
+composer install
 
-## 🚀 Installation & Setup
+# 4. Démarrer l'environnement Docker ( si vous rencontrez des problèmes à cette étape en tant qu'utilisateur Windows aller à la section dépannage)
+./vendor/bin/sail up -d
 
-### 📋 Prérequis
+# 5. Configurer l'application
+./vendor/bin/sail artisan key:generate
+./vendor/bin/sail artisan migrate:fresh --seed
+```
 
-- **Docker** et **Docker Compose** installés
-- **Git** pour cloner le projet
-- **WSL2** (pour Windows) ou Linux/macOS
-
-### 🔧 Installation rapide
-
+#### Sur Linux/macOS
 ```bash
 # 1. Cloner le projet
 git clone <repository-url>
@@ -46,222 +40,147 @@ cd apwap
 # 2. Copier le fichier d'environnement
 cp .env.example .env
 
-# 3. Installer les dépendances via Sail
+# 3. Installer les dépendances
+composer install
+
+# 4. Démarrer l'environnement Docker
 ./vendor/bin/sail up -d
-./vendor/bin/sail composer install
 
-# 4. Générer la clé d'application
+# 5. Configurer l'application
 ./vendor/bin/sail artisan key:generate
-
-# 5. Exécuter les migrations
-./vendor/bin/sail artisan migrate:refresh
-
-# 6. (Optionnel) Exécuter les seeders
-./vendor/bin/sail artisan db:seed
+./vendor/bin/sail artisan migrate:fresh --seed
 ```
 
-### ⚙️ Configuration de l'environnement
+**C'est fini !** 
 
-Modifiez le fichier `.env` avec vos paramètres :
+- **Site web** : http://localhost
+- **Base de données** : PostgreSQL sur localhost:5432
+- **Données de test** : Incluses automatiquement
 
-```env
-# Base de données
-DB_CONNECTION=pgsql
-DB_HOST=pgsql
-DB_PORT=5432
-DB_DATABASE=apwap
-DB_USERNAME=sail
-DB_PASSWORD=password
+## 🆘 Dépannage
 
-# Application
-APP_NAME="APWAP"
-APP_ENV=local
-APP_KEY=base64:...
-APP_DEBUG=true
-APP_URL=http://localhost
-
-# Timezone pour les EAU
-APP_TIMEZONE=Asia/Dubai
 ```
 
-### 🐳 Commandes Docker Sail
+### ⚠️ Si ça ne fonctionne pas sur Windows
+**Solution recommandée : Utilisez WSL2**
+
+1. Ouvre **Ubuntu** (ou ta distribution WSL)
+2. Navigate vers ton projet :
+```bash
+cd /mnt/c/Users/Example/path/projet_cloner/
+```
+3. Lance Sail depuis WSL :
+```bash
+./vendor/bin/sail up -d
+```
+
+> **💡 Pourquoi WSL ?** Laravel Sail nécessite WSL2 ou un environnement Linux, car Sail utilise Docker sous un shell bash.
+
+### Erreur "Permission denied" (Linux/macOS)
+```bash
+# Donner les permissions d'exécution
+chmod +x vendor/bin/sail
+./vendor/bin/sail up -d
+```
+
+### Port déjà utilisé
+```bash
+# Si le port 80 est occupé, modifier dans .env :
+APP_PORT=8080
+
+# Puis redémarrer
+./vendor/bin/sail down
+./vendor/bin/sail up -d
+```
+
+### Réinitialiser complètement
+```bash
+# En cas de problème, tout nettoyer :
+./vendor/bin/sail down --volumes
+./vendor/bin/sail up -d
+./vendor/bin/sail artisan migrate:fresh --seed
+```
+
+## 📱 Fonctionnalités
+
+### 🏠 Dashboard
+- Tableau de bord avec métriques en temps réel
+- Scores de bien-être des animaux (6 piliers)
+- Alertes et rappels intelligents
+
+### 🐕 Gestion des animaux
+- Profils détaillés avec photos
+- Historique médical complet
+- Suivi des vaccinations
+
+### 🛒 E-commerce
+- Boutique avec 65+ produits
+- 21 catégories spécialisées
+- Panier et commandes
+- Reviews et notes
+
+### 👨‍⚕️ Consultations
+- Prise de rendez-vous
+- Gestion des vétérinaires
+- Suivi médical
+
+## �️ Commandes utiles
 
 ```bash
-# Démarrer les conteneurs
-./vendor/bin/sail up -d
-
-# Arrêter les conteneurs
-./vendor/bin/sail down
-
 # Voir les logs
 ./vendor/bin/sail logs
 
-# Accéder au container de l'application
+# Accéder au container
 ./vendor/bin/sail bash
 
-# Exécuter des commandes Artisan
-./vendor/bin/sail artisan <command>
-```
-
-## 🗄️ Base de données
-
-### 📊 Schéma de données
-
-Le projet utilise un schéma complet avec **18 tables principales** :
-
-**👥 Utilisateurs**
-- `users` - Comptes utilisateurs
-- `user_sessions` - Sessions actives
-
-**🐾 Animaux**
-- `pets` - Profils des animaux
-- `pet_health_records` - Dossiers médicaux
-- `pet_vaccinations` - Historique vaccinations
-- `pet_medical_history` - Historique médical
-- `pet_photos` - Photos des animaux
-
-**👨‍⚕️ Consultations**
-- `veterinarians` - Profils vétérinaires
-- `consultations` - Rendez-vous
-- `consultation_availability` - Disponibilités
-
-**🛒 E-commerce**
-- `product_categories` - Catégories produits
-- `products` - Catalogue produits
-- `product_reviews` - Avis clients
-- `carts` - Paniers d'achat
-- `cart_items` - Articles du panier
-- `orders` - Commandes
-- `order_items` - Articles commandés
-
-**🔔 Notifications**
-- `notifications` - Messages système
-
-### 🔧 Gestion des migrations
-
-```bash
-# Voir le statut des migrations
-./vendor/bin/sail artisan migrate:status
-
-# Exécuter les migrations
+# Artisan commands
 ./vendor/bin/sail artisan migrate
-
-# Rollback des migrations
-./vendor/bin/sail artisan migrate:rollback
-
-# Réinitialiser la base de données
-./vendor/bin/sail artisan migrate:refresh
-```
-
-### 🔍 Accès à la base de données
-
-```bash
-# Via psql
-./vendor/bin/sail psql
-
-# Via Tinker
 ./vendor/bin/sail artisan tinker
 
-# Commandes SQL utiles
-\dt                    # Lister les tables
-\d nom_table          # Structure d'une table
-\d+ nom_table         # Détails complets
-SELECT * FROM users;  # Exemple de requête
+# Arrêter l'environnement
+./vendor/bin/sail down
 ```
 
-## 📁 Structure du projet
+## �️ Base de données
+
+- **PostgreSQL** avec Docker
+- **18 tables** principales
+- **Seeders** pour données de test
+- **Migrations** versionnées
+
+### Accès direct à la DB
+```bash
+./vendor/bin/sail psql
+```
+
+## 🏗️ Stack technique
+
+- **Laravel 11.x** - Framework PHP
+- **PostgreSQL 15** - Base de données
+- **Docker Sail** - Environnement
+- **Tailwind CSS** - Styles
+- **Blade Components** - Interface modulaire
+
+## � Structure
 
 ```
 apwap/
-├── app/
-│   ├── Http/Controllers/     # Contrôleurs
-│   ├── Models/              # Modèles Eloquent
-│   ├── Services/            # Services métier
-│   └── ...
-├── database/
-│   ├── migrations/          # Migrations de base de données
-│   ├── seeders/            # Données initiales
-│   └── factories/          # Factories pour tests
-├── resources/
-│   ├── views/              # Vues Blade
-│   ├── js/                 # JavaScript
-│   └── css/                # Styles
-├── routes/
-│   ├── web.php             # Routes web
-│   └── api.php             # Routes API
-└── documentation/          # Documentation projet
+├── app/Models/          # Modèles (User, Pet, Product, Order...)
+├── app/Http/Controllers/ # Contrôleurs
+├── resources/views/     # Vues Blade
+├── database/migrations/ # Migrations DB
+├── database/seeders/    # Données de test
+└── routes/web.php       # Routes
 ```
 
-## 📋 Processus de contribution
+## 🤝 Contribution
 
-### Branches
+1. Fork le projet
+2. Créer une branche feature (`git checkout -b feature/ma-feature`)
+3. Commiter (`git commit -m 'Add ma feature'`)
+4. Pusher (`git push origin feature/ma-feature`)
+5. Ouvrir une Pull Request
 
-Le projet utilise **Git Flow** avec la structure suivante :
+## 📄 License
 
-- **`main`** - Branche de production (stable, déployée)
-- **`develop`** - Branche de développement (intégration des features)
-- **`feature/*`** - Branches pour les nouvelles fonctionnalités
-
-### Contribuer
-
-1. **Fork** le projet sur GitHub
-2. **Cloner** votre fork localement
-   ```bash
-   git clone https://github.com/votre-username/apwap.git
-   cd apwap
-   ```
-
-3. **Configurer** les remotes
-   ```bash
-   git remote add upstream https://github.com/original-repo/apwap.git
-   ```
-
-4. **Créer** une branche feature depuis `develop`
-   ```bash
-   git checkout develop
-   git pull upstream develop
-   git checkout -b feature/nom_features
-   ```
-
-5. **Développer** votre fonctionnalité
-   ```bash
-   # Faire vos modifications
-   git add .
-   git commit -m "feat: add amazing feature"
-   ```
-
-6. **Synchroniser** avec develop régulièrement
-   ```bash
-   git fetch upstream
-   git rebase upstream/develop
-   ```
-
-7. **Pousser** votre branche
-   ```bash
-   git push origin feature/amazing-feature
-   ```
-
-8. **Créer** une Pull Request
-   - Depuis votre branche `feature/amazing-feature`
-   - Vers la branche `develop` du projet principal
-   - Avec une description détaillée des changements
-
-### ⚠️ Règles importantes
-
-- **❌ Ne jamais pusher directement sur `main`**
-- **❌ Ne jamais pusher directement sur `develop`**
-- **✅ Toujours créer une Pull Request**
-- **✅ Attendre la validation avant merge**
-- **✅ Tester localement avant de pousser**
-
-### 📝 Conventions de commit
-
-Utilisez les conventions **Conventional Commits** :
-
-```bash
-feat: nouvelle fonctionnalité
-fix: correction de bug
-docs: modification de documentation
-style: changements de style (formatting, etc.)
-refactor: refactoring du code
-```
+Ce projet est sous license MIT.
