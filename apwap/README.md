@@ -7,7 +7,7 @@ Plateforme complète de soins pour animaux de compagnie combinant dashboard pers
 ### Prérequis
 - **Docker Desktop** installé et démarré
 - **Git** installé
-- **Composer** installé globalement
+- **Composer&Npm** installé globalement
 
 ### Installation
 
@@ -22,6 +22,7 @@ copy .env.example .env
 
 # 3. Installer les dépendances
 composer install
+npm install
 
 # 4. Démarrer l'environnement Docker ( si vous rencontrez des problèmes à cette étape en tant qu'utilisateur Windows aller à la section dépannage)
 ./vendor/bin/sail up -d
@@ -29,6 +30,8 @@ composer install
 # 5. Configurer l'application
 ./vendor/bin/sail artisan key:generate
 ./vendor/bin/sail artisan migrate:fresh --seed
+./vendor/bin/sail npm run dev
+
 ```
 
 #### Sur Linux/macOS
@@ -42,6 +45,7 @@ cp .env.example .env
 
 # 3. Installer les dépendances
 composer install
+npm install
 
 # 4. Démarrer l'environnement Docker
 ./vendor/bin/sail up -d
@@ -49,6 +53,7 @@ composer install
 # 5. Configurer l'application
 ./vendor/bin/sail artisan key:generate
 ./vendor/bin/sail artisan migrate:fresh --seed
+./vendor/bin/sail npm run dev
 ```
 
 **C'est fini !** 

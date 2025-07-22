@@ -1,0 +1,13 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "Start APWAP Development Server",
+			"type": "shell",
+			"command": "cd ${workspaceFolder}/apwap && php artisan serve --host=0.0.0.0 --port=8000",
+			"group": "serve",
+			"isBackground": true,
+			"problemMatcher": []
+		}
+	]
+}
