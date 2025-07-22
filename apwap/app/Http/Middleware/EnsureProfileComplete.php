@@ -18,7 +18,6 @@ class EnsureProfileComplete
         if (auth()->check()) {
             $user = auth()->user();
             
-            // Vérifier si les informations essentielles sont complètes
             $requiredFields = ['first_name', 'last_name', 'phone', 'city'];
             $missingFields = [];
             
@@ -28,7 +27,6 @@ class EnsureProfileComplete
                 }
             }
             
-            // Si des champs sont manquants et qu'on n'est pas déjà sur la page de profil
             if (!empty($missingFields) && !$request->routeIs('profile.*')) {
                 return redirect()->route('profile.edit')
                     ->with('warning', __('Please complete your profile to access all APWAP features.'))
