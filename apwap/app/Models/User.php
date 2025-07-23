@@ -55,6 +55,8 @@ class User extends Authenticatable
         'notification_sms',
         'emergency_contact_name',
         'emergency_contact_phone',
+        'location',
+        'bio',
     ];
 
     /**

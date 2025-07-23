@@ -23,6 +23,7 @@ class DatabaseSeeder extends Seeder
         // Ajouter les données de la boutique
         $this->call([
             ShopSeeder::class,
+            VeterinarianSeeder::class,
         ]);
     }
 }
