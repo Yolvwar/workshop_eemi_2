@@ -6,6 +6,7 @@ use App\Http\Controllers\ShopController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\ConsultationController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -17,22 +18,18 @@ Route::get('/dashboard', [DashboardController::class, 'index'])
     ->name('dashboard');
 
 
-// Boutique principale (accessible sans auth)
 Route::prefix('shop')->name('shop.')->group(function () {
-    // Pages principales
     Route::get('/', [ShopController::class, 'index'])->name('index');
     Route::get('/catalog', [ShopController::class, 'catalog'])->name('catalog');
     Route::get('/product/{product}', [ShopController::class, 'show'])->name('product');
     Route::get('/category/{category}', [ShopController::class, 'category'])->name('category');
     Route::get('/search', [ShopController::class, 'search'])->name('search');
     
-    // Recommandations pour animaux (nécessite auth)
     Route::middleware('auth')->group(function () {
         Route::get('/pet/{pet}/recommendations', [ShopController::class, 'petRecommendations'])->name('pet.recommendations');
     });
 });
 
-// ========== ROUTES PANIER ET COMMANDES (nécessitent auth) ==========
 
 Route::middleware('auth')->group(function () {
     Route::prefix('cart')->name('cart.')->group(function () {
@@ -69,15 +66,39 @@ Route::middleware('auth')->group(function () {
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::put('/profile/password', [ProfileController::class, 'updatePassword'])->name('password.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
     Route::get('pets', function () {
         return view('pets.index');
     })->name('pets.index');
 
-    Route::get('consultations', function () {
-        return view('consultations.index');
-    })->name('consultations.index');
+    Route::prefix('consultations')->name('consultations.')->group(function () {
+        Route::get('/', [ConsultationController::class, 'index'])->name('index');
+        Route::get('/create', [ConsultationController::class, 'create'])->name('create');
+        Route::post('/', [ConsultationController::class, 'store'])->name('store');
+        Route::get('/{consultation}', [ConsultationController::class, 'show'])->name('show');
+        Route::get('/{consultation}/edit', [ConsultationController::class, 'edit'])->name('edit');
+        Route::patch('/{consultation}', [ConsultationController::class, 'update'])->name('update');
+        
+        Route::get('/{consultation}/prepare', [ConsultationController::class, 'prepare'])->name('prepare');
+        Route::patch('/{consultation}/prepare', [ConsultationController::class, 'prepareSave'])->name('prepare.save');
+        Route::post('/{consultation}/prepare/send', [ConsultationController::class, 'prepareSend'])->name('prepare.send');
+        
+        Route::get('/{consultation}/teleconsultation', [ConsultationController::class, 'teleconsultation'])->name('teleconsultation');
+        Route::post('/{consultation}/teleconsultation/chat', [ConsultationController::class, 'teleconsultationChat'])->name('teleconsultation.chat');
+        Route::post('/{consultation}/teleconsultation/extend', [ConsultationController::class, 'teleconsultationExtend'])->name('teleconsultation.extend');
+        Route::get('/teleconsultation/create', [ConsultationController::class, 'teleconsultationCreate'])->name('teleconsultation.create');
+        Route::get('/teleconsultation/emergency', [ConsultationController::class, 'teleconsultationEmergency'])->name('teleconsultation.emergency');
+        
+        Route::post('/{consultation}/start', [ConsultationController::class, 'start'])->name('start');
+        Route::post('/{consultation}/complete', [ConsultationController::class, 'complete'])->name('complete');
+        Route::patch('/{consultation}/cancel', [ConsultationController::class, 'cancel'])->name('cancel');
+        
+        Route::get('/emergency/center', [ConsultationController::class, 'emergency'])->name('emergency');
+        
+        Route::get('/history/list', [ConsultationController::class, 'history'])->name('history');
+    });
 });
 
 require __DIR__.'/auth.php';

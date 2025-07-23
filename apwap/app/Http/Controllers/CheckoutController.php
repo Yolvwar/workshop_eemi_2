@@ -222,7 +222,7 @@ class CheckoutController extends Controller
             'coupon_code' => 'required|string'
         ]);
 
-        // Simulation de validation de coupon
+
         $validCoupons = [
             'WELCOME10' => ['discount' => 10, 'type' => 'percentage'],
             'SUMMER20' => ['discount' => 20, 'type' => 'percentage'],
