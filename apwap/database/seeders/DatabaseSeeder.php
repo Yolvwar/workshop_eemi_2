@@ -19,5 +19,11 @@ class DatabaseSeeder extends Seeder
             'name' => 'Test User',
             'email' => 'test@example.com',
         ]);
+
+        // Ajouter les données de la boutique
+        $this->call([
+            ShopSeeder::class,
+            VeterinarianSeeder::class,
+        ]);
     }
 }
