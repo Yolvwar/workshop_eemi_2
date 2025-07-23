@@ -7,17 +7,34 @@ use Carbon\Carbon;
 
 class CalendarController extends Controller
 {
-    public function index()
+    public function index($pet)
     {
-        return view('calendar.index');
+        $events = Event::where('pets_id', $pet)
+            ->get()
+            ->map(function ($event) {
+                return [
+                    'id' => $event->id,
+                    'title' => $event->title,
+                    'start' => $event->start->format('Y-m-d\TH:i:s'),
+                    'end' => $event->end ? $event->end->format('Y-m-d\TH:i:s') : null,
+                    'color' => $event->color,
+                    'allDay' => $event->all_day
+                ];
+            });
+
+        // Add this line to debug
+        \Log::info('Events for pet ' . $pet, ['events' => $events->toArray()]);
+
+        return view('calendar.index', compact('pet', 'events'));
     }
 
-    public function getEvents(Request $request)
+    public function getEvents(Request $request, $pet)
     {
-        $events = Event::whereBetween('start', [
-            $request->start,
-            $request->end
-        ])->get();
+        $events = Event::where('pet_id', $pet)
+            ->whereBetween('start', [
+                $request->start,
+                $request->end
+            ])->get();
 
         return response()->json($events->map(function ($event) {
             return [
@@ -31,7 +48,7 @@ class CalendarController extends Controller
         }));
     }
 
-    public function store(Request $request)
+    public function store(Request $request, $pet = null)
     {
         $request->validate([
             'title' => 'required|string|max:255',
@@ -41,13 +58,19 @@ class CalendarController extends Controller
             'all_day' => 'boolean'
         ]);
 
-        $event = Event::create([
+        $data = [
             'title' => $request->title,
             'start' => Carbon::parse($request->start),
             'end' => $request->end ? Carbon::parse($request->end) : null,
             'color' => $request->color ?? '#3788d8',
             'all_day' => $request->all_day ?? false
-        ]);
+        ];
+
+        if ($pet) {
+            $data['pet_id'] = $pet;
+        }
+
+        $event = Event::create($data);
 
         return response()->json([
             'id' => $event->id,
@@ -59,7 +82,8 @@ class CalendarController extends Controller
         ]);
     }
 
-    public function update(Request $request, Event $event)
+
+    public function update(Request $request, $pet, Event $event)
     {
         $request->validate([
             'title' => 'required|string|max:255',
@@ -68,6 +92,8 @@ class CalendarController extends Controller
             'color' => 'nullable|string',
             'all_day' => 'boolean'
         ]);
+
+        // Vous pouvez ajouter ici une vérification que l'événement appartient bien à l'animal $pet.
 
         $event->update([
             'title' => $request->title,
@@ -87,8 +113,9 @@ class CalendarController extends Controller
         ]);
     }
 
-    public function destroy(Event $event)
+    public function destroy($pet, Event $event)
     {
+        // Vous pouvez vérifier ici que l'événement appartient bien à l'animal $pet.
         $event->delete();
         return response()->json(['message' => 'Event deleted successfully']);
     }

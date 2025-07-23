@@ -36,6 +36,7 @@ Route::prefix('shop')->name('shop.')->group(function () {
 
 
 Route::middleware('auth')->group(function () {
+    // Panier (Cart)
     Route::prefix('cart')->name('cart.')->group(function () {
         Route::get('/', [CartController::class, 'index'])->name('index');
         Route::post('/add', [CartController::class, 'add'])->name('add');
@@ -44,11 +45,11 @@ Route::middleware('auth')->group(function () {
         Route::post('/clear', [CartController::class, 'clear'])->name('clear');
         Route::get('/count', [CartController::class, 'count'])->name('count');
         Route::get('/mini', [CartController::class, 'mini'])->name('mini');
-
         Route::post('/apply-coupon', [CartController::class, 'applyCoupon'])->name('apply-coupon');
         Route::post('/remove-coupon', [CartController::class, 'removeCoupon'])->name('remove-coupon');
     });
 
+    // Checkout
     Route::prefix('checkout')->name('checkout.')->group(function () {
         Route::get('/', [CheckoutController::class, 'index'])->name('index');
         Route::post('/', [CheckoutController::class, 'process'])->name('process');
@@ -56,6 +57,7 @@ Route::middleware('auth')->group(function () {
         Route::post('/coupon/validate', [CheckoutController::class, 'validateCoupon'])->name('coupon.validate');
     });
 
+    // Commandes (Orders)
     Route::prefix('orders')->name('orders.')->group(function () {
         Route::get('/', [OrderController::class, 'index'])->name('index');
         Route::get('/{order}', [OrderController::class, 'show'])->name('show');
@@ -65,19 +67,22 @@ Route::middleware('auth')->group(function () {
         Route::post('/{order}/cancel', [OrderController::class, 'cancel'])->name('cancel');
         Route::post('/{order}/reorder', [OrderController::class, 'reorder'])->name('reorder');
     });
-});
 
-Route::middleware('auth')->group(function () {
     // Profil utilisateur
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::put('/profile/password', [ProfileController::class, 'updatePassword'])->name('password.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-    Route::get('pets', function () {
-        return view('pets.index');
-    })->name('pets.index');
+    // Animaux (Pets)
+    Route::resource('pets', PetController::class);
+    Route::get('/pets/{pet}/calendar', [CalendarController::class, 'index'])->name('pets.calendar.index');
+    Route::get('/pets/{pet}/calendar/events', [CalendarController::class, 'getEvents'])->name('pets.calendar.events');
+    Route::post('/pets/{pet}/calendar/events', [CalendarController::class, 'store'])->name('pets.calendar.events.store');
+    Route::put('/pets/{pet}/calendar/events/{event}', [CalendarController::class, 'update'])->name('pets.calendar.events.update');
+    Route::delete('/pets/{pet}/calendar/events/{event}', [CalendarController::class, 'destroy'])->name('pets.calendar.events.destroy');
 
+    // Consultations
     Route::prefix('consultations')->name('consultations.')->group(function () {
         Route::get('/', [ConsultationController::class, 'index'])->name('index');
         Route::get('/create', [ConsultationController::class, 'create'])->name('create');
@@ -101,22 +106,15 @@ Route::middleware('auth')->group(function () {
         Route::patch('/{consultation}/cancel', [ConsultationController::class, 'cancel'])->name('cancel');
 
         Route::get('/emergency/center', [ConsultationController::class, 'emergency'])->name('emergency');
-
         Route::get('/history/list', [ConsultationController::class, 'history'])->name('history');
     });
 
-    Route::get('pets', [PetController::class, 'index'])->name('pets.index');
-    Route::get('pets/create', [PetController::class, 'create'])->name('pets.create');
-    Route::post('pets', [PetController::class, 'store'])->name('pets.store');
-    Route::get('pets/{pet}', [PetController::class, 'show'])->name('pets.show');
-    Route::get('pets/{pet}/edit', [PetController::class, 'edit'])->name('pets.edit');
-    Route::put('pets/{pet}', [PetController::class, 'update'])->name('pets.update');
-    Route::delete('pets/{pet}', [PetController::class, 'destroy'])->name('pets.destroy');
-    // Calendrier avec Consultations
+    // Calendrier général
     Route::get('/calendar', [CalendarController::class, 'index'])->name('calendar.index');
     Route::get('/calendar/events', [CalendarController::class, 'getEvents'])->name('calendar.events');
     Route::post('/calendar/events', [CalendarController::class, 'store'])->name('calendar.store');
     Route::put('/calendar/events/{consultation}', [CalendarController::class, 'update'])->name('calendar.update');
     Route::delete('/calendar/events/{consultation}', [CalendarController::class, 'destroy'])->name('calendar.destroy');
 });
+
 
