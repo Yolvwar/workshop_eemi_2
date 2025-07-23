@@ -11,7 +11,6 @@ class DashboardController extends Controller
     {
         // Données d'exemple pour les composants du dashboard
         $data = [
-            // Vue d'ensemble - Cards
             'pets' => [
                 'count' => 3,
                 'activeCount' => 3,
@@ -28,7 +27,6 @@ class DashboardController extends Controller
                 'trackingStatus' => 'Tracking actif'
             ],
 
-            // Alertes
             'alerts' => [
                 [
                     'type' => 'urgent',
@@ -59,7 +57,6 @@ class DashboardController extends Controller
                 ]
             ],
 
-            // Analytics des 6 piliers
             'petsAnalytics' => [
                 'Max' => [
                     'name' => 'Max',
@@ -105,7 +102,6 @@ class DashboardController extends Controller
                 ]
             ],
 
-            // Activités récentes
             'recentActivities' => [
                 [
                     'description' => 'Repas donné à <strong>Max</strong>',
@@ -129,7 +125,6 @@ class DashboardController extends Controller
                 ]
             ],
 
-            // Rappels
             'reminders' => [
                 [
                     'title' => 'Repas du soir - Max',
@@ -148,7 +143,6 @@ class DashboardController extends Controller
                 ]
             ],
 
-            // Actions rapides
             'quickActions' => [
                 [
                     'label' => 'Ajouter note',
@@ -172,7 +166,6 @@ class DashboardController extends Controller
                 ]
             ],
 
-            // Météo
             'weather' => [
                 'temperature' => '32°C',
                 'description' => 'Ensoleillé',
@@ -204,7 +197,6 @@ class DashboardController extends Controller
                 ]
             ],
 
-            // Recommandations IA
             'aiRecommendations' => [
                 [
                     'title' => 'Optimisation nutrition',
@@ -241,7 +233,6 @@ class DashboardController extends Controller
                 ]
             ],
 
-            // Planning de la semaine
             'weeklySchedule' => [
                 'Aujourd\'hui' => [
                     'color' => 'blue',
@@ -302,7 +293,6 @@ class DashboardController extends Controller
                 ]
             ],
 
-            // Statistiques globales
             'wellnessAverage' => '87%',
             'activitiesToday' => 5,
             'pendingReminders' => 3,
