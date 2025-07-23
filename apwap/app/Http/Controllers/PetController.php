@@ -105,43 +105,41 @@ class PetController extends Controller
     {
         $validated = $request->validate([
             'name' => 'required|string|max:255',
-            'species' => 'required|string|max:255',
+            'species' => 'required|string|in:chat,chien',
             'breed' => 'nullable|string|max:255',
             'birth_date' => 'nullable|date',
+            'gender' => 'required|string|in:male,female',
+            'weight' => 'nullable|numeric',
+            'is_neutered' => 'boolean',
             'health_score' => 'nullable|integer|min:0|max:100',
             'education_score' => 'nullable|integer|min:0|max:100',
             'nutrition_score' => 'nullable|integer|min:0|max:100',
             'activity_score' => 'nullable|integer|min:0|max:100',
             'lifestyle_score' => 'nullable|integer|min:0|max:100',
-            'emotional_score' => 'nullable|integer|min:0|max:100',
-            'overall_score' => 'nullable|integer|min:0|max:100',
-            'markings' => 'nullable|string|max:255',
-            'is_neutered' => 'nullable|boolean',
-            'energy_level' => 'nullable|integer|min:1|max:10',
-            'sociability' => 'nullable|string|max:50',
-            'obedience_level' => 'nullable|integer|min:1|max:10',
-            'fears_phobias' => 'nullable|string',
-            'favorite_toys' => 'nullable|string',
-            'exercise_routine' => 'nullable|string',
+            'emotional_score' => 'nullable|integer|min:0|max:100'
         ]);
+
+        // Gestion spéciale pour is_neutered (checkbox)
+        $validated['is_neutered'] = $request->has('is_neutered');
 
         $pet->update($validated);
 
-        $validatedHealth = $request->validate([
-            'health_record' => 'array',
-            'health_record.primary_vet_name' => 'nullable|string|max:255',
-            'health_record.blood_type' => 'nullable|string|max:20',
-            'health_record.allergies' => 'nullable|string',
-            'health_record.current_medications' => 'nullable|string',
-        ]);
+        if ($request->has('health_record')) {
+            $validatedHealth = $request->validate([
+                'health_record.primary_vet_name' => 'nullable|string|max:255',
+                'health_record.blood_type' => 'nullable|string|max:20',
+                'health_record.allergies' => 'nullable|string',
+                'health_record.current_medications' => 'nullable|string',
+            ]);
 
-        $pet->healthRecord()->updateOrCreate(
-            ['pet_id' => $pet->id],
-            $validatedHealth['health_record']
-        );
+            $pet->healthRecord()->updateOrCreate(
+                ['pet_id' => $pet->id],
+                $validatedHealth['health_record']
+            );
+        }
 
-        return redirect()->route('pets.index')
-            ->with('success', 'Profil animal mis à jour avec succès.');
+        return redirect()->route('pets.show', $pet)
+            ->with('success', 'Animal mis à jour avec succès');
     }
 
 

@@ -13,8 +13,8 @@ class Event extends Model
         'start',
         'end',
         'color',
-        'description',
-        'all_day'
+        'all_day',
+        'pets_id'
     ];
 
     protected $casts = [
@@ -22,4 +22,9 @@ class Event extends Model
         'end' => 'datetime',
         'all_day' => 'boolean'
     ];
+
+    public function pet()
+    {
+        return $this->belongsTo(Pet::class, 'pets_id');
+    }
 }

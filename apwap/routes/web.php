@@ -21,6 +21,11 @@ Route::middleware('auth')->group(function () {
 
     // Animaux
     Route::resource('pets', PetController::class);
+    Route::get('/pets/{pet}/calendar', [CalendarController::class, 'index'])->name('pets.calendar.index');
+    Route::get('/pets/{pet}/calendar/events', [CalendarController::class, 'getEvents'])->name('pets.calendar.events');
+    Route::post('/pets/{pet}/calendar/events', [CalendarController::class, 'store'])->name('pets.calendar.events.store');
+    Route::put('/pets/{pet}/calendar/events/{event}', [CalendarController::class, 'update'])->name('pets.calendar.events.update');
+    Route::delete('/pets/{pet}/calendar/events/{event}', [CalendarController::class, 'destroy'])->name('pets.calendar.events.destroy');
 
     // Calendrier avec Consultations
     Route::get('/calendar', [CalendarController::class, 'index'])->name('calendar.index');
