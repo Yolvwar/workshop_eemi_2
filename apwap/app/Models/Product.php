@@ -240,7 +240,11 @@ class Product extends Model
             if (str_starts_with($this->images[0], 'http')) {
                 return $this->images[0];
             }
-            // Sinon, construire l'URL relative
+            // Si l'image commence par 'images/', c'est un chemin public
+            if (str_starts_with($this->images[0], 'images/')) {
+                return asset($this->images[0]);
+            }
+            // Sinon, construire l'URL relative pour storage
             return asset('storage/' . $this->images[0]);
         }
         return null;
