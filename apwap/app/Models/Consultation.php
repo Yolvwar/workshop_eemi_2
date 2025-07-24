@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Carbon\Carbon;
 
 class Consultation extends Model
 {
@@ -54,7 +55,6 @@ class Consultation extends Model
 
     protected $casts = [
         'scheduled_date' => 'date',
-        'scheduled_time' => 'time',
         'started_at' => 'datetime',
         'completed_at' => 'datetime',
         'documents' => 'array',

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Pet;
 use App\Models\Veterinarian;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class PetController extends Controller
 {
@@ -66,7 +67,7 @@ class PetController extends Controller
             ? round($scores->avg())
             : null;
 
-        $validated['user_id'] = auth()->id();
+        $validated['user_id'] = Auth::id();
 
         $pet = Pet::create($validated);
 
@@ -81,7 +82,7 @@ class PetController extends Controller
 
         // Création du dossier de santé associé
         $pet->healthRecord()->updateOrCreate(
-            ['pet_name' => $pet->name],
+            [],
             $validatedHealth['health_record']
         );
 
@@ -133,7 +134,7 @@ class PetController extends Controller
             ]);
 
             $pet->healthRecord()->updateOrCreate(
-                ['pet_id' => $pet->id],
+                [],
                 $validatedHealth['health_record']
             );
         }

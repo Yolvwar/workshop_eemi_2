@@ -9,8 +9,6 @@ use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ConsultationController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PetController;
-use App\Http\Controllers\PetPhotoController;
-use App\Http\Controllers\PetScoreController;
 use App\Http\Controllers\CalendarController;
 
 Route::get('/', function () {
@@ -28,7 +26,7 @@ Route::prefix('shop')->name('shop.')->group(function () {
     Route::get('/product/{product}', [ShopController::class, 'show'])->name('product');
     Route::get('/category/{category}', [ShopController::class, 'category'])->name('category');
     Route::get('/search', [ShopController::class, 'search'])->name('search');
-
+    
     Route::middleware('auth')->group(function () {
         Route::get('/pet/{pet}/recommendations', [ShopController::class, 'petRecommendations'])->name('pet.recommendations');
     });
@@ -36,7 +34,6 @@ Route::prefix('shop')->name('shop.')->group(function () {
 
 
 Route::middleware('auth')->group(function () {
-    // Panier (Cart)
     Route::prefix('cart')->name('cart.')->group(function () {
         Route::get('/', [CartController::class, 'index'])->name('index');
         Route::post('/add', [CartController::class, 'add'])->name('add');
@@ -45,19 +42,18 @@ Route::middleware('auth')->group(function () {
         Route::post('/clear', [CartController::class, 'clear'])->name('clear');
         Route::get('/count', [CartController::class, 'count'])->name('count');
         Route::get('/mini', [CartController::class, 'mini'])->name('mini');
+        
         Route::post('/apply-coupon', [CartController::class, 'applyCoupon'])->name('apply-coupon');
         Route::post('/remove-coupon', [CartController::class, 'removeCoupon'])->name('remove-coupon');
     });
-
-    // Checkout
+    
     Route::prefix('checkout')->name('checkout.')->group(function () {
         Route::get('/', [CheckoutController::class, 'index'])->name('index');
         Route::post('/', [CheckoutController::class, 'process'])->name('process');
         Route::post('/shipping/calculate', [CheckoutController::class, 'calculateShipping'])->name('shipping.calculate');
         Route::post('/coupon/validate', [CheckoutController::class, 'validateCoupon'])->name('coupon.validate');
     });
-
-    // Commandes (Orders)
+    
     Route::prefix('orders')->name('orders.')->group(function () {
         Route::get('/', [OrderController::class, 'index'])->name('index');
         Route::get('/{order}', [OrderController::class, 'show'])->name('show');
@@ -67,14 +63,14 @@ Route::middleware('auth')->group(function () {
         Route::post('/{order}/cancel', [OrderController::class, 'cancel'])->name('cancel');
         Route::post('/{order}/reorder', [OrderController::class, 'reorder'])->name('reorder');
     });
+});
 
-    // Profil utilisateur
+Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::put('/profile/password', [ProfileController::class, 'updatePassword'])->name('password.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-    // Animaux (Pets)
     Route::resource('pets', PetController::class);
     Route::get('/pets/{pet}/calendar', [CalendarController::class, 'index'])->name('pets.calendar.index');
     Route::get('/pets/{pet}/calendar/events', [CalendarController::class, 'getEvents'])->name('pets.calendar.events');
@@ -82,7 +78,6 @@ Route::middleware('auth')->group(function () {
     Route::put('/pets/{pet}/calendar/events/{event}', [CalendarController::class, 'update'])->name('pets.calendar.events.update');
     Route::delete('/pets/{pet}/calendar/events/{event}', [CalendarController::class, 'destroy'])->name('pets.calendar.events.destroy');
 
-    // Consultations
     Route::prefix('consultations')->name('consultations.')->group(function () {
         Route::get('/', [ConsultationController::class, 'index'])->name('index');
         Route::get('/create', [ConsultationController::class, 'create'])->name('create');
@@ -90,31 +85,25 @@ Route::middleware('auth')->group(function () {
         Route::get('/{consultation}', [ConsultationController::class, 'show'])->name('show');
         Route::get('/{consultation}/edit', [ConsultationController::class, 'edit'])->name('edit');
         Route::patch('/{consultation}', [ConsultationController::class, 'update'])->name('update');
-
+        
         Route::get('/{consultation}/prepare', [ConsultationController::class, 'prepare'])->name('prepare');
         Route::patch('/{consultation}/prepare', [ConsultationController::class, 'prepareSave'])->name('prepare.save');
         Route::post('/{consultation}/prepare/send', [ConsultationController::class, 'prepareSend'])->name('prepare.send');
-
+        
         Route::get('/{consultation}/teleconsultation', [ConsultationController::class, 'teleconsultation'])->name('teleconsultation');
         Route::post('/{consultation}/teleconsultation/chat', [ConsultationController::class, 'teleconsultationChat'])->name('teleconsultation.chat');
         Route::post('/{consultation}/teleconsultation/extend', [ConsultationController::class, 'teleconsultationExtend'])->name('teleconsultation.extend');
         Route::get('/teleconsultation/create', [ConsultationController::class, 'teleconsultationCreate'])->name('teleconsultation.create');
         Route::get('/teleconsultation/emergency', [ConsultationController::class, 'teleconsultationEmergency'])->name('teleconsultation.emergency');
-
+        
         Route::post('/{consultation}/start', [ConsultationController::class, 'start'])->name('start');
         Route::post('/{consultation}/complete', [ConsultationController::class, 'complete'])->name('complete');
         Route::patch('/{consultation}/cancel', [ConsultationController::class, 'cancel'])->name('cancel');
-
+        
         Route::get('/emergency/center', [ConsultationController::class, 'emergency'])->name('emergency');
+        
         Route::get('/history/list', [ConsultationController::class, 'history'])->name('history');
     });
-
-    // Calendrier général
-    Route::get('/calendar', [CalendarController::class, 'index'])->name('calendar.index');
-    Route::get('/calendar/events', [CalendarController::class, 'getEvents'])->name('calendar.events');
-    Route::post('/calendar/events', [CalendarController::class, 'store'])->name('calendar.store');
-    Route::put('/calendar/events/{consultation}', [CalendarController::class, 'update'])->name('calendar.update');
-    Route::delete('/calendar/events/{consultation}', [CalendarController::class, 'destroy'])->name('calendar.destroy');
 });
 
-
+require __DIR__.'/auth.php';
