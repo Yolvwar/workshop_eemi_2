@@ -7,16 +7,11 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Support\Str;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 
 class User extends Authenticatable
 {
-    /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasApiTokens, HasFactory, Notifiable;
-    use HasUuids;
-    use HasFactory;
+    use HasApiTokens, HasFactory, Notifiable, HasUuids;
 
     protected $table = 'users';
 
@@ -58,22 +53,11 @@ class User extends Authenticatable
         'password',
     ];
 
-    /**
-     * Get the attributes that should be cast.
-     *
-     * @return array<string, string>
-     */
-    protected function casts(): array
-    {
-        return [
-            'email_verified_at' => 'datetime',
-            'password' => 'hashed',
-        ];
-    }
+    protected $casts = [
+        'email_verified_at' => 'datetime',
+        'password' => 'hashed',
+    ];
 
-    /**
-     * Boot the model and generate UUID.
-     */
     protected static function boot()
     {
         parent::boot();
@@ -104,7 +88,7 @@ class User extends Authenticatable
     }
 
     /**
-     * Relation avec les animaux
+     * Relation : animaux actifs
      */
     public function pets()
     {
@@ -112,7 +96,7 @@ class User extends Authenticatable
     }
 
     /**
-     * Relation avec les paniers
+     * Relation : tous les paniers
      */
     public function carts()
     {
@@ -120,7 +104,7 @@ class User extends Authenticatable
     }
 
     /**
-     * Relation avec le panier actif
+     * Relation : panier actif
      */
     public function activeCart()
     {
@@ -128,7 +112,7 @@ class User extends Authenticatable
     }
 
     /**
-     * Relation avec les commandes
+     * Relation : commandes de l'utilisateur
      */
     public function orders()
     {
@@ -136,7 +120,7 @@ class User extends Authenticatable
     }
 
     /**
-     * Relation avec les avis de produits
+     * Relation : avis produits
      */
     public function productReviews()
     {
@@ -144,7 +128,7 @@ class User extends Authenticatable
     }
 
     /**
-     * Obtenir le panier actif ou en créer un
+     * Obtenir ou créer un panier actif
      */
     public function getOrCreateActiveCart()
     {
@@ -159,15 +143,15 @@ class User extends Authenticatable
         $total = $this->orders()
             ->whereIn('status', ['confirmed', 'shipped', 'delivered'])
             ->sum('total_amount');
-            
+
         $this->total_spent = $total;
         $this->save();
-        
+
         return $total;
     }
 
     /**
-     * Obtenir le niveau de membership
+     * Accesseur : niveau de fidélité
      */
     public function getMembershipLevelAttribute()
     {
@@ -178,9 +162,9 @@ class User extends Authenticatable
     }
 
     /**
-     * Vérifier si livraison gratuite
+     * Vérifie si l'utilisateur bénéficie de la livraison gratuite
      */
-    public function hasFreeLivery()
+    public function hasFreeDelivery()
     {
         return in_array($this->membership_type, ['Gold', 'Platinum']);
     }
