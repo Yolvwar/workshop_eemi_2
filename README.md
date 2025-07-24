@@ -4,7 +4,7 @@ Plateforme haut de gamme combinant un **dashboard personnalisé**, un **e-commer
 
 ---
 
-## **Installation Rapide (≈ 2 minutes)**
+## **Installation Rapide**
 
 ### **Prérequis**
 - **Docker Desktop** installé et en cours d’exécution
