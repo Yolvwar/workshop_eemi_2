@@ -1,17 +1,21 @@
-# 🐾 APWAP - Luxury Pet Care Platform
+# **APWAP – Luxury Pet Care Platform**
 
-Plateforme complète de soins pour animaux de compagnie combinant dashboard personnalisé, e-commerce spécialisé et gestion vétérinaire.
+Plateforme haut de gamme combinant un **dashboard personnalisé**, un **e-commerce spécialisé** et un **espace de gestion vétérinaire** pour chiens et chats.
 
-## 🚀 Installation ultra-rapide (2 minutes)
+---
 
-### Prérequis
-- **Docker Desktop** installé et démarré
+## **Installation Rapide (≈ 2 minutes)**
+
+### **Prérequis**
+- **Docker Desktop** installé et en cours d’exécution
 - **Git** installé
-- **Composer&Npm** installé globalement
+- **Composer** et **NPM** installés globalement
 
-### Installation
+---
 
-#### Sur Windows (PowerShell)
+### **Étapes d’installation**
+
+#### **Windows (PowerShell)**
 ```powershell
 # 1. Cloner le projet
 git clone <repository-url>
@@ -24,17 +28,16 @@ copy .env.example .env
 composer install
 npm install
 
-# 4. Démarrer l'environnement Docker ( si vous rencontrez des problèmes à cette étape en tant qu'utilisateur Windows aller à la section dépannage)
+# 4. Démarrer l'environnement Docker
 ./vendor/bin/sail up -d
 
 # 5. Configurer l'application
 ./vendor/bin/sail artisan key:generate
 ./vendor/bin/sail artisan migrate:fresh --seed
 ./vendor/bin/sail npm run dev
-
 ```
 
-#### Sur Linux/macOS
+#### **Linux / macOS**
 ```bash
 # 1. Cloner le projet
 git clone <repository-url>
@@ -56,81 +59,69 @@ npm install
 ./vendor/bin/sail npm run dev
 ```
 
-**C'est fini !** 
+**Accès local :**
+- Application : [http://localhost](http://localhost)
+- Base de données : PostgreSQL sur `localhost:5432`
+- Données de test : incluses automatiquement
 
-- **Site web** : http://localhost
-- **Base de données** : PostgreSQL sur localhost:5432
-- **Données de test** : Incluses automatiquement
+---
 
-## 🆘 Dépannage
+## **Dépannage**
 
-```
-
-### ⚠️ Si ça ne fonctionne pas sur Windows
-**Solution recommandée : Utilisez WSL2**
-
-1. Ouvre **Ubuntu** (ou ta distribution WSL)
-2. Navigate vers ton projet :
+### **Windows – Utilisation de WSL2 recommandée**
 ```bash
 cd /mnt/c/Users/Example/path/projet_cloner/
-```
-3. Lance Sail depuis WSL :
-```bash
 ./vendor/bin/sail up -d
 ```
 
-> **💡 Pourquoi WSL ?** Laravel Sail nécessite WSL2 ou un environnement Linux, car Sail utilise Docker sous un shell bash.
-
-### Erreur "Permission denied" (Linux/macOS)
+### **Erreurs fréquentes :**
+- **Permission denied (Linux/macOS)**  
 ```bash
-# Donner les permissions d'exécution
 chmod +x vendor/bin/sail
 ./vendor/bin/sail up -d
 ```
-
-### Port déjà utilisé
-```bash
-# Si le port 80 est occupé, modifier dans .env :
+- **Port 80 occupé**  
+Modifier dans `.env` :  
+```env
 APP_PORT=8080
-
-# Puis redémarrer
+```
+Puis redémarrer :  
+```bash
 ./vendor/bin/sail down
 ./vendor/bin/sail up -d
 ```
 
-### Réinitialiser complètement
+- **Réinitialisation complète**  
 ```bash
-# En cas de problème, tout nettoyer :
 ./vendor/bin/sail down --volumes
 ./vendor/bin/sail up -d
 ./vendor/bin/sail artisan migrate:fresh --seed
 ```
 
-## 📱 Fonctionnalités
+---
 
-### 🏠 Dashboard
-- Tableau de bord avec métriques en temps réel
-- Scores de bien-être des animaux (6 piliers)
-- Alertes et rappels intelligents
+## **Fonctionnalités principales**
 
-### 🐕 Gestion des animaux
-- Profils détaillés avec photos
-- Historique médical complet
-- Suivi des vaccinations
+### **Dashboard**
+- Vue d’ensemble avec métriques en temps réel
+- Indicateurs de bien-être des animaux (6 piliers)
+- Système d’alertes et rappels personnalisés
 
-### 🛒 E-commerce
-- Boutique avec 65+ produits
-- 21 catégories spécialisées
-- Panier et commandes
-- Reviews et notes
+### **Gestion des animaux**
+- Profils complets avec photos et historique médical
+- Suivi des vaccinations et soins
 
-### 👨‍⚕️ Consultations
-- Prise de rendez-vous
-- Gestion des vétérinaires
-- Suivi médical
+### **E-commerce**
+- Catalogue premium de +65 produits et 21 catégories
+- Système de panier, commandes et avis clients
 
-## �️ Commandes utiles
+### **Consultations**
+- Prise de rendez-vous en ligne
+- Gestion des vétérinaires et suivi des diagnostics
 
+---
+
+## **Commandes utiles**
 ```bash
 # Voir les logs
 ./vendor/bin/sail logs
@@ -138,7 +129,7 @@ APP_PORT=8080
 # Accéder au container
 ./vendor/bin/sail bash
 
-# Artisan commands
+# Artisan
 ./vendor/bin/sail artisan migrate
 ./vendor/bin/sail artisan tinker
 
@@ -146,46 +137,50 @@ APP_PORT=8080
 ./vendor/bin/sail down
 ```
 
-## �️ Base de données
+---
 
-- **PostgreSQL** avec Docker
+## **Base de données**
+- **PostgreSQL 15** avec Docker
 - **18 tables** principales
-- **Seeders** pour données de test
-- **Migrations** versionnées
+- **Migrations versionnées** et **seeders** intégrés
 
-### Accès direct à la DB
+Accès direct :  
 ```bash
 ./vendor/bin/sail psql
 ```
 
-## 🏗️ Stack technique
+---
 
-- **Laravel 11.x** - Framework PHP
-- **PostgreSQL 15** - Base de données
-- **Docker Sail** - Environnement
-- **Tailwind CSS** - Styles
-- **Blade Components** - Interface modulaire
+## **Stack technique**
+- **Laravel 11.x** – Framework PHP
+- **PostgreSQL** – Base de données
+- **Docker Sail** – Environnement de développement
+- **Tailwind CSS** – Styles minimalistes
+- **Blade Components** – Interface modulaire
 
-## � Structure
+---
 
+## **Arborescence**
 ```
 apwap/
-├── app/Models/          # Modèles (User, Pet, Product, Order...)
+├── app/Models/           # Modèles (User, Pet, Product, Order…)
 ├── app/Http/Controllers/ # Contrôleurs
-├── resources/views/     # Vues Blade
-├── database/migrations/ # Migrations DB
-├── database/seeders/    # Données de test
-└── routes/web.php       # Routes
+├── resources/views/      # Vues Blade
+├── database/migrations/  # Migrations
+├── database/seeders/     # Données de test
+└── routes/web.php        # Routes
 ```
 
-## 🤝 Contribution
+---
 
-1. Fork le projet
-2. Créer une branche feature (`git checkout -b feature/ma-feature`)
-3. Commiter (`git commit -m 'Add ma feature'`)
-4. Pusher (`git push origin feature/ma-feature`)
+## **Contribution**
+1. Forker le projet  
+2. Créer une branche : `git checkout -b feature/ma-feature`  
+3. Committer : `git commit -m 'Add ma feature'`  
+4. Pousser : `git push origin feature/ma-feature`  
 5. Ouvrir une Pull Request
 
-## 📄 License
+---
 
-Ce projet est sous license MIT.
+## **Licence**
+Ce projet est distribué sous licence **MIT**.
