@@ -103,6 +103,18 @@
                     </nav>
                 </div>
                 
+                <div class="mt-auto">
+                    <a href="{{ route('logout') }}" class="group flex items-center px-3 py-2 text-sm font-medium rounded-lg text-gray-700 hover:bg-gray-50" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                        <svg class="mr-3 h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1m0-10V5"></path>
+                        </svg>
+                        Déconnexion
+                    </a>
+                    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="hidden">
+                        @csrf
+                    </form>
+                </div>
+
                 <div class="flex-shrink-0 flex bg-gray-50 p-4">
                     <div class="flex items-center">
                         <div class="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center">
