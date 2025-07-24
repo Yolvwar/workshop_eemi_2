@@ -1,95 +1,137 @@
 <x-guest-layout>
-    <div class="mb-6 text-center">
-        <h2 class="text-2xl font-bold text-gray-900">{{ __('Join APWAP') }}</h2>
-        <p class="mt-2 text-sm text-gray-600">{{ __('Premium Pet Care in Dubai') }}</p>
+    <!-- Header -->
+    <div class="text-center mb-8">
+        <h2 class="text-3xl font-bold text-gray-900 mb-2">Rejoindre APWAP</h2>
     </div>
 
-    <form method="POST" action="{{ route('register') }}">
+    <form method="POST" action="{{ route('register') }}" class="space-y-5">
         @csrf
 
-        <!-- First Name -->
-        <div>
-            <x-input-label for="first_name" :value="__('First Name')" />
-            <x-text-input id="first_name" class="block mt-1 w-full" type="text" name="first_name" :value="old('first_name')" required autofocus autocomplete="given-name" />
-            <x-input-error :messages="$errors->get('first_name')" class="mt-2" />
+        <!-- Row 1: Name Fields -->
+        <div class="grid grid-cols-2 gap-4">
+            <!-- First Name -->
+            <div>
+                <label for="first_name" class="block text-sm font-semibold text-gray-700 mb-2">
+                    Prénom
+                </label>
+                <input id="first_name" 
+                       type="text" 
+                       name="first_name" 
+                       value="{{ old('first_name') }}" 
+                       required 
+                       autofocus 
+                       autocomplete="given-name"
+                       class="w-full px-4 py-3 border border-gray-200 rounded-lg text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#305F72] focus:border-transparent transition-all"
+                       placeholder="Prénom">
+                <x-input-error :messages="$errors->get('first_name')" class="mt-1 text-red-500 text-xs" />
+            </div>
+
+            <!-- Last Name -->
+            <div>
+                <label for="last_name" class="block text-sm font-semibold text-gray-700 mb-2">
+                    Nom
+                </label>
+                <input id="last_name" 
+                       type="text" 
+                       name="last_name" 
+                       value="{{ old('last_name') }}" 
+                       required 
+                       autocomplete="family-name"
+                       class="w-full px-4 py-3 border border-gray-200 rounded-lg text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#305F72] focus:border-transparent transition-all"
+                       placeholder="Nom">
+                <x-input-error :messages="$errors->get('last_name')" class="mt-1 text-red-500 text-xs" />
+            </div>
         </div>
 
-        <!-- Last Name -->
-        <div class="mt-4">
-            <x-input-label for="last_name" :value="__('Last Name')" />
-            <x-text-input id="last_name" class="block mt-1 w-full" type="text" name="last_name" :value="old('last_name')" required autocomplete="family-name" />
-            <x-input-error :messages="$errors->get('last_name')" class="mt-2" />
+        <!-- Row 2: Email and Phone -->
+        <div class="grid grid-cols-2 gap-4">
+            <!-- Email Address -->
+            <div>
+                <label for="email" class="block text-sm font-semibold text-gray-700 mb-2">
+                    Adresse email
+                </label>
+                <input id="email" 
+                       type="email" 
+                       name="email" 
+                       value="{{ old('email') }}" 
+                       required 
+                       autocomplete="username"
+                       class="w-full px-4 py-3 border border-gray-200 rounded-lg text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#305F72] focus:border-transparent transition-all"
+                       placeholder="votre@email.com">
+                <x-input-error :messages="$errors->get('email')" class="mt-1 text-red-500 text-xs" />
+            </div>
+
+            <!-- Phone -->
+            <div>
+                <label for="phone" class="block text-sm font-semibold text-gray-700 mb-2">
+                    Téléphone
+                </label>
+                <input id="phone" 
+                       type="tel" 
+                       name="phone" 
+                       value="{{ old('phone') }}" 
+                       autocomplete="tel"
+                       class="w-full px-4 py-3 border border-gray-200 rounded-lg text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#305F72] focus:border-transparent transition-all"
+                       placeholder="+971 50 123 4567">
+                <x-input-error :messages="$errors->get('phone')" class="mt-1 text-red-500 text-xs" />
+            </div>
         </div>
 
-        <!-- Email Address -->
-        <div class="mt-4">
-            <x-input-label for="email" :value="__('Email')" />
-            <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autocomplete="username" />
-            <x-input-error :messages="$errors->get('email')" class="mt-2" />
+        <!-- Row 3: Password Fields -->
+        <div class="grid grid-cols-2 gap-4">
+            <!-- Password -->
+            <div>
+                <label for="password" class="block text-sm font-semibold text-gray-700 mb-2">
+                    Mot de passe
+                </label>
+                <input id="password" 
+                       type="password" 
+                       name="password" 
+                       required 
+                       autocomplete="new-password"
+                       class="w-full px-4 py-3 border border-gray-200 rounded-lg text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#305F72] focus:border-transparent transition-all"
+                       placeholder="••••••••">
+                <x-input-error :messages="$errors->get('password')" class="mt-1 text-red-500 text-xs" />
+            </div>
+
+            <!-- Confirm Password -->
+            <div>
+                <label for="password_confirmation" class="block text-sm font-semibold text-gray-700 mb-2">
+                    Confirmer le mot de passe
+                </label>
+                <input id="password_confirmation" 
+                       type="password" 
+                       name="password_confirmation" 
+                       required 
+                       autocomplete="new-password"
+                       class="w-full px-4 py-3 border border-gray-200 rounded-lg text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#305F72] focus:border-transparent transition-all"
+                       placeholder="••••••••">
+                <x-input-error :messages="$errors->get('password_confirmation')" class="mt-1 text-red-500 text-xs" />
+            </div>
         </div>
 
-        <!-- Phone -->
-        <div class="mt-4">
-            <x-input-label for="phone" :value="__('Phone Number')" />
-            <x-text-input id="phone" class="block mt-1 w-full" type="tel" name="phone" :value="old('phone')" placeholder="+971 50 123 4567" autocomplete="tel" />
-            <x-input-error :messages="$errors->get('phone')" class="mt-2" />
-            <p class="mt-1 text-xs text-gray-500">{{ __('For emergency contact and appointment reminders') }}</p>
+        <!-- Submit Button -->
+        <button type="submit" 
+                class="w-full bg-[#305F72] text-white py-3 rounded-lg font-semibold hover:bg-[#1E3A44] transform hover:scale-[1.02] transition-all duration-200 shadow-lg">
+            Créer mon compte
+        </button>
+
+        <!-- Divider -->
+        <div class="relative my-6">
+            <div class="absolute inset-0 flex items-center">
+                <div class="w-full border-t border-gray-200"></div>
+            </div>
+            <div class="relative flex justify-center text-sm">
+                <span class="px-4 bg-white text-gray-500">Déjà membre ?</span>
+            </div>
         </div>
 
-        <!-- City -->
-        <div class="mt-4">
-            <x-input-label for="city" :value="__('City')" />
-            <select id="city" name="city" class="block mt-1 w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm">
-                <option value="Dubai" {{ old('city') == 'Dubai' ? 'selected' : '' }}>{{ __('Dubai') }}</option>
-                <option value="Abu Dhabi" {{ old('city') == 'Abu Dhabi' ? 'selected' : '' }}>{{ __('Abu Dhabi') }}</option>
-                <option value="Sharjah" {{ old('city') == 'Sharjah' ? 'selected' : '' }}>{{ __('Sharjah') }}</option>
-                <option value="Ajman" {{ old('city') == 'Ajman' ? 'selected' : '' }}>{{ __('Ajman') }}</option>
-            </select>
-            <x-input-error :messages="$errors->get('city')" class="mt-2" />
-        </div>
-
-        <!-- Language Preference -->
-        <div class="mt-4">
-            <x-input-label for="preferred_language" :value="__('Preferred Language')" />
-            <select id="preferred_language" name="preferred_language" class="block mt-1 w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm">
-                <option value="en" {{ old('preferred_language') == 'en' ? 'selected' : '' }}>{{ __('English') }}</option>
-                <option value="fr" {{ old('preferred_language') == 'fr' ? 'selected' : '' }}>{{ __('Français') }}</option>
-                <option value="ar" {{ old('preferred_language') == 'ar' ? 'selected' : '' }}>{{ __('العربية') }}</option>
-            </select>
-            <x-input-error :messages="$errors->get('preferred_language')" class="mt-2" />
-        </div>
-
-        <!-- Password -->
-        <div class="mt-4">
-            <x-input-label for="password" :value="__('Password')" />
-
-            <x-text-input id="password" class="block mt-1 w-full"
-                            type="password"
-                            name="password"
-                            required autocomplete="new-password" />
-
-            <x-input-error :messages="$errors->get('password')" class="mt-2" />
-        </div>
-
-        <!-- Confirm Password -->
-        <div class="mt-4">
-            <x-input-label for="password_confirmation" :value="__('Confirm Password')" />
-
-            <x-text-input id="password_confirmation" class="block mt-1 w-full"
-                            type="password"
-                            name="password_confirmation" required autocomplete="new-password" />
-
-            <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
-        </div>
-
-        <div class="flex items-center justify-end mt-4">
-            <a class="underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800" href="{{ route('login') }}">
-                {{ __('Already registered?') }}
+        <!-- Login Link -->
+        <div class="text-center">
+            <a href="{{ route('login') }}" 
+               class="w-full inline-block py-3 px-6 border border-[#305F72] text-[#305F72] rounded-lg font-semibold hover:bg-[#305F72] hover:text-white transition-all duration-200">
+                Se connecter
             </a>
-
-            <x-primary-button class="ms-4">
-                {{ __('Register') }}
-            </x-primary-button>
         </div>
     </form>
 </x-guest-layout>
