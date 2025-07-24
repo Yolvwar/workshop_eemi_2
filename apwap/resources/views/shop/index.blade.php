@@ -7,18 +7,10 @@
 <div class="min-h-screen bg-gradient-to-b from-gray-50 to-white">
     <!-- Hero Banner Section -->
     <section class="relative overflow-hidden">
-        <!-- Placeholder pour l'image du graphiste -->
-        <div class="h-[600px] lg:h-[700px] bg-gradient-to-br from-gray-200 to-gray-300 relative">
+        <!-- Hero Image -->
+        <div class="h-[600px] lg:h-[700px] relative">
+            <img src="{{ asset('images/hero_image.jpg') }}" alt="APWAP - Premium Pet Care" class="absolute inset-0 w-full h-full object-cover">
             <div class="absolute inset-0 bg-black/30"></div>
-            <div class="absolute inset-0 flex items-center justify-center">
-                <div class="text-center text-white">
-                    <div class="bg-white/10 backdrop-blur-sm rounded-2xl p-8 border border-white/20">
-                        <p class="text-lg opacity-90 mb-2">Emplacement pour</p>
-                        <h1 class="text-3xl font-bold">Image Hero du Graphiste</h1>
-                        <p class="text-sm opacity-75 mt-2">Dimensions recommandées: 1920x700px</p>
-                    </div>
-                </div>
-            </div>
         </div>
         
         <!-- Hero Content Overlay -->
@@ -88,9 +80,6 @@
     <section id="featured-products" class="py-16 bg-gradient-to-b from-white to-gray-50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center mb-12">
-                <span class="bg-emerald-100 text-emerald-800 text-sm font-medium px-4 py-2 rounded-full">
-                    🔥 Nos Bestsellers
-                </span>
                 <h2 class="text-4xl font-bold text-gray-900 mt-4 mb-4">
                     Produits les Plus Populaires
                 </h2>
@@ -198,17 +187,32 @@
             </div>
             
             <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-                @foreach($categories->take(8) as $category)
+                @php
+                    $categoryIcons = [
+                        'Nutrition & Alimentation' => 'cake',
+                        'Santé & Hygiène' => 'heart',
+                        'Jouets & Accessoires' => 'puzzle-piece',
+                        'Confort & Lifestyle' => 'home',
+                        'Éducation & Dressage' => 'academic-cap',
+                        'Toilettage & Beauté' => 'sparkles'
+                    ];
+                    $mainCategories = $categories->where('parent_id', null)->take(8);
+                @endphp
+                
+                @foreach($mainCategories as $category)
                 <a href="{{ route('shop.category', $category->slug) }}" 
                    class="group bg-gradient-to-br from-gray-50 to-gray-100 hover:from-emerald-50 hover:to-emerald-100 rounded-2xl p-6 text-center transition-all duration-300 transform hover:-translate-y-1 hover:shadow-lg">
                     <div class="w-16 h-16 bg-white rounded-2xl flex items-center justify-center mx-auto mb-4 group-hover:bg-emerald-600 transition-colors shadow-sm">
-                        <x-heroicon-o-squares-2x2 class="w-8 h-8 text-gray-600 group-hover:text-white" />
+                        @php
+                            $iconName = $categoryIcons[$category->name] ?? 'squares-2x2';
+                        @endphp
+                        <x-dynamic-component :component="'heroicon-o-' . $iconName" class="w-8 h-8 text-gray-600 group-hover:text-white" />
                     </div>
                     <h3 class="font-semibold text-gray-900 group-hover:text-emerald-600 transition-colors">
                         {{ $category->name }}
                     </h3>
                     <p class="text-sm text-gray-600 mt-1">
-                        {{ $category->products_count ?? 0 }} produits
+                        {{ $category->description }}
                     </p>
                 </a>
                 @endforeach
